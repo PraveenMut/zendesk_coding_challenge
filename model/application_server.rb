@@ -17,7 +17,7 @@ class RequestHandler
     if get_all_tickets
       http_response = HTTP.auth(@@authentication).get(@@req_url + "tickets.json")
     else
-      http_response = HTTP.auth(@@authentication).get(@@req_url + id.to_s + ".json")
+      http_response = HTTP.auth(@@authentication).get(@@req_url + "tickets/" + id.to_s + ".json")
     end
     if http_response.status != 200
       @@error_message = http_response.status # store the error in a variable for future reference
@@ -40,4 +40,4 @@ class RequestHandler
   end
 end
 
-RequestHandler.api_requester(true)
+p RequestHandler.api_requester(nil, 1)

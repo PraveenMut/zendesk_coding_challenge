@@ -47,4 +47,7 @@ class ApplicationView
   def self.show_single_ticket
   end
 
+  def self.error_handler(message, error_code)
+  end
+
 end

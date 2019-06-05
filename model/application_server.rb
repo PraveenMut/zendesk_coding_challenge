@@ -3,7 +3,6 @@ require 'JSON'
 
 
 class RequestHandler
-  attr_reader :error_message
   @@tickets = nil
   @@error_message = nil
   @@req_url = "https://praveenmuthu.zendesk.com/api/v2/"
@@ -45,5 +44,3 @@ class RequestHandler
     return @@tickets
   end
 end
-
-RequestHandler

@@ -1,9 +1,13 @@
 require './model/application_server.rb'
 require './view/application_view.rb'
 
+# The Controller from MVC architectural pattern.
+# Controls the program flow and handles user input.
+# Retrieves data from the model, processes it, displaying either a failure message
+# or the resultant data.
 class ApplicationController
-  @@input = nil    # stores the input extracted from the user
-  @@page_number = 1 # stores a default page number, in this case, default it to 1
+  @@input = nil
+  @@page_number = 1
 
   def get_input  
     print "Please enter input: "
@@ -28,6 +32,3 @@ class ApplicationController
   def run_main      # the main execution point for the application. This is where it begins.
   end
 end
-
-
-

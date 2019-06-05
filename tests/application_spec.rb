@@ -3,6 +3,19 @@ require './model/application_server.rb'
 require './controller/application_controller.rb'
 require './view/application_view.rb'
 
+class RequestHandlerTest < RequestHandler
+end
+
+class ApplicationControllerTest < ApplicationController
+  attr_accessor :input_test
+  def initialize
+    @input_test = @@input
+  end
+end
+
+class ApplicationViewTest < ApplicationView
+end
+
 
 RSpec.describe RequestHandler do
   describe '#api_requester' do

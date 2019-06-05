@@ -46,4 +46,4 @@ class RequestHandler
   end
 end
 
-p RequestHandler.retrieve_all_tickets
+RequestHandler

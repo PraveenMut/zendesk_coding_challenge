@@ -54,4 +54,25 @@ RSpec.describe RequestHandler do
   end
 end
 
+RSpec.describe ApplicationController do
+  let(:error_santiser_handling) { RequestHandler.retrieve_single_ticket(5000) }
+  subject { error_santiser_handling }
 
+  describe "#sanitiser" do
+    context "the data is successfully retrieved from the model" do
+      expect(ApplicationController.santiser).to be_truthy
+    end
+
+    context "the data is an error response as a mock test" do
+      expect(subject()).to eq(404)
+    end
+
+    context "the data isn't an error response" do
+      expect(ApplicationController.santiser).to include("ticket")
+    end 
+
+    context "the data is a valid array and is subdivided" do
+      expect(ApplicationController.santiser.length).to eq(4)
+    end
+  end
+end

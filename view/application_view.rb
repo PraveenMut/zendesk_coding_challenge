@@ -12,6 +12,7 @@ class ApplicationView
     print "This program is a lightweight ticket viewer.\n"
     print "It show you how many tickets you have as agent.\n"
     print "To continue, please select one of the options:\n\n"
+    print_main_menu()
   end
 
   def self.print_main_menu

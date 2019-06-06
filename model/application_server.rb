@@ -9,10 +9,6 @@ class RequestHandler
   @@authentication = "Basic cHJhdmVlbi5tdXRAZ21haWwuY29tOkphNHBUOUQzN0RkUFR5OHU4aEZV"
 
   def self.api_requester(get_all_tickets=nil, id="")
-    # forbidden_response = "Authentication failed, check your credentials"
-    # not_found_response = "API endpoint access failure"
-    # server_error_response = "API unavailable at this time, check again later"
-    # unknown_response = "Cannot access API"
     if get_all_tickets
       http_response = HTTP.auth(@@authentication).get(@@req_url + "tickets.json")
     else
@@ -42,5 +38,10 @@ class RequestHandler
   def self.retrieve_all_tickets
     api_requester(true)
     return @@tickets
+  end
+end
+
+class ApplicationModel
+  def self.paginator(ary, page_limit)
   end
 end

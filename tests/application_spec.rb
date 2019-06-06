@@ -16,7 +16,6 @@ end
 class ApplicationViewTest < ApplicationView
 end
 
-
 RSpec.describe RequestHandler do
   describe '#api_requester' do
     it ': returns a 200 response for all requests' do
@@ -77,7 +76,7 @@ RSpec.describe ApplicationView do
   describe "error_handler" do
     context "displays errors correctly to screen" do
       specify { expect { ApplicationView.error_handler("Cannot Access API", 400) }.to output.to_stdout }
-      specify { expect { ApplicationView.error_handler("Cannot Access API", 400) }.to output(/Access API/).to_stdout }
+      specify { expect { ApplicationView.error_handler("Bad Request. Cannot Access API", 400) }.to output(/Access API/).to_stdout }
       specify { expect { ApplicationView.error_handler("Authentication failed, please check your credentials", 401) }.to output(/(Authentication)/).to_stdout }
       specify { expect { ApplicationView.error_handler("API unavailable at this time, check again later", 503)}.to output(/(unavailable)/).to_stdout }
       specify { expect { ApplicationView.error_handler(nil, nil)}.to output(/unknown/).to_stdout }
@@ -85,19 +84,42 @@ RSpec.describe ApplicationView do
   end
 end
 
-RSpec.describe ApplicationController do
-  let(:input_tester) { ApplicationControllerTest.new }
-  describe "#menu_control" do
-    context "correct inputs leads to either an error response or getAllTickets or getSingleTickets method" do
-      specify { expect { input_tester.input_test = 'v' }.to output(/^.*(subject|id|401|404|400|503).*$/).to_stdout }
-      specify { expect { input_tester.input_test = "s"}.to output(/(Enter)/).to_stdout }
-      specify { expect { input_tester.input_test = "q"}.to output(/(Goodbye)/).to_stdout }
+# RSpec.describe ApplicationController do
+#   let(:input_tester) { ApplicationControllerTest.new }
+#   subject( { input_tester })
+#   describe "#menu_control" do
+#     context "correct inputs leads to either an error response or getAllTickets or getSingleTickets method" do
+#       specify { expect { input_tester.input_test = 'v' }.to output(/^.*(subject|id|401|404|400|503).*$/).to_stdout }
+#       specify { expect { input_tester.input_test = "s"}.to output(/(Enter)/).to_stdout }
+#       specify { expect { input_tester.input_test = "q"}.to output(/(Goodbye)/).to_stdout }
+#     end
+
+#     context "invalid input leads to a please try again error" do
+#       specify { expect {input_tester.input_test = 'viewer'}.to output(/Invalid/).to_stdout }
+#       specify { expect {input_tester.input_test = 'shdfj'}.to output(/Invalid/).to_stdout }
+#       specify { expect {input_tester.input_test = nil}.to output(/Invalid/).to_stdout }
+#     end
+#   end
+# end
+
+RSpec.describe ApplicationModel do
+  let(:page_limit) { 25 }
+  describe "#paginator" do
+    context "expect the resultant parent array length to be 4" do
+      specify { expect(ApplicationModel.paginator((1..100).to_a, page_limit).length).to eq(4) }
     end
 
-    context "invalid input leads to a please try again error" do
-      specify { expect {input_tester.input_test = 'viewer'}.to output(/Invalid/).to_stdout }
-      specify { expect {input_tester.input_test = 'shdfj'}.to output(/Invalid/).to_stdout }
-      specify { expect {input_tester.input_test = nil}.to output(/Invalid/).to_stdout }
+    context "expect the resultant parent array length to be 8" do
+      specify { expect(ApplicationModel.paginator((1..200).to_a, page_limit).length).to eq(8) }
+    end
+
+    context "expect the resultant parent array length to be empty" do
+      specify { expect(ApplicationModel.paginator([], page_limit).length).to eq(0) }
+    end
+
+    context "expect an invalid input to return an empty array" do
+      specify { expect(ApplicationModel.paginator("error_input", page_limit).length).to eq(0) }
     end
   end
 end
+

@@ -66,9 +66,9 @@ end
 RSpec.describe ApplicationView do
   describe "#error_handler" do
     it ": handles errors correctly and displays them to screen" do
-      expect(ApplicationView.error_handler("Cannot access API", 400)).to output(/Sorry! We have encountered an error: Cannot Access the API the error code is 400"/).to_stdout
-      expect(ApplicationView.error_handler("Authentication failed, please check your credentials", 401)).to output("Sorry! We have encountered an error: Authentication Failed, please check your credentials").to_stdout
-      expect(ApplicationController.error_handler(nil, nil)).to output("Sorry! An unknown error has occured. Please restart the program.").to_stdout
+      expect(ApplicationView.error_handler("Cannot access API", 400)).to eq(1)
+      expect(ApplicationView.error_handler("Authentication failed, please check your credentials", 401)).to eq(1)
+      expect(ApplicationView.error_handler(nil, nil)).to eq(-1)
     end
   end
 end

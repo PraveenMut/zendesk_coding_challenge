@@ -41,6 +41,16 @@ class RequestHandler
 end
 
 class ApplicationModel
+  @@sanitised_response = nil
+
+  def self.sanitised_response=(tickets_data)
+    @@sanitised_response = tickets_data
+  end
+
+  def self.retrieve_tickets_data
+    @@sanitised_response
+  end
+
   def self.paginator(ary, page_limit)
     return [] unless ary.class == Array
 

@@ -54,7 +54,7 @@ class ApplicationController
 
   def self.select_ticket_menu
     p "At ticket menu"
-    0
+    return 0
   end
 
   def self.show_all      # a method to show all the tickets and drive program flow for showing all tickets

@@ -73,8 +73,8 @@ RSpec.describe ApplicationView do
 end
 
 RSpec.describe ApplicationView do
-  describe "error_handler" do
-    context "displays errors correctly to screen" do
+  describe "#error_handler" do
+    context ": displays errors correctly to screen" do
       specify { expect { ApplicationView.error_handler("Cannot Access API", 400) }.to output.to_stdout }
       specify { expect { ApplicationView.error_handler("Bad Request. Cannot Access API", 400) }.to output(/Access API/).to_stdout }
       specify { expect { ApplicationView.error_handler("Authentication failed, please check your credentials", 401) }.to output(/(Authentication)/).to_stdout }
@@ -84,23 +84,67 @@ RSpec.describe ApplicationView do
   end
 end
 
-# RSpec.describe ApplicationController do
-#   let(:input_tester) { ApplicationControllerTest.new }
-#   subject( { input_tester })
-#   describe "#menu_control" do
-#     context "correct inputs leads to either an error response or getAllTickets or getSingleTickets method" do
-#       specify { expect { input_tester.input_test = 'v' }.to output(/^.*(subject|id|401|404|400|503).*$/).to_stdout }
-#       specify { expect { input_tester.input_test = "s"}.to output(/(Enter)/).to_stdout }
-#       specify { expect { input_tester.input_test = "q"}.to output(/(Goodbye)/).to_stdout }
-#     end
+RSpec.describe ApplicationController do
+  describe '#menu_control' do
+    context ': leads to the get all tickets method when inputted "v"' do
+      before(:each) { allow(ApplicationController).to receive(:get_input).and_return('v') }
 
-#     context "invalid input leads to a please try again error" do
-#       specify { expect {input_tester.input_test = 'viewer'}.to output(/Invalid/).to_stdout }
-#       specify { expect {input_tester.input_test = 'shdfj'}.to output(/Invalid/).to_stdout }
-#       specify { expect {input_tester.input_test = nil}.to output(/Invalid/).to_stdout }
-#     end
-#   end
-# end
+      specify { expect { ApplicationController.menu_control }.to output(/(Loading)/).to_stdout }
+      specify { expect { ApplicationController.menu_control }.to output(/^.*(subject|id|401|404|400|503).*$/).to_stdout }
+    end
+
+    context ': leads to the single ticket method when inputted s' do
+      before(:each) { allow(ApplicationController).to receive(:get_input).and_return('s') }
+
+      specify { expect { ApplicationController.menu_control }.to output(/ID/).to_stdout }
+    end
+
+    context ': leads to the quit method when inputted "q"' do
+      before(:each) { allow(ApplicationController).to receive(:get_input).and_return('q') }
+
+      specify { expect { ApplicationController.menu_control }.to output(/Goodbye!/).to_stdout }
+    end
+
+    context ': leads to the invalid input method when inputted any other character' do
+      before(:each) { allow(ApplicationController).to receive(:get_input).and_return('k') }
+
+      specify { expect { ApplicationController.menu_control }.to output(/^.*(erroneous|input).*$/).to_stdout }
+    end
+
+    context ': leads to the error handler when receiving error responses ' do
+      before(:each) { allow(RequestHandler).to receive(:api_requester).and_return(401) }
+      before(:each) { allow(RequestHandler).to receive(:retrieve_all_tickets).and_return(401) }
+      before(:each) { allow(RequestHandler).to receive(:get_input).and_return('v') }
+
+      specify { expect { ApplicationController.menu_control }.to_output(/^.*(401).*$/) }
+    end
+
+    context ': leads to the error handler when receiving error responses ' do
+      before(:each) { allow(RequestHandler).to receive(:api_requester).and_return(404) }
+      before(:each) { allow(RequestHandler).to receive(:retrieve_all_tickets).and_return(404) }
+      before(:each) { allow(RequestHandler).to receive(:get_input).and_return('v') }
+
+      specify { expect { ApplicationController.menu_control }.to_output(/^.*(404).*$/) }
+    end
+    
+    context ': leads to the error handler when receiving error responses ' do
+      before(:each) { allow(RequestHandler).to receive(:api_requester).and_return(503) }
+      before(:each) { allow(RequestHandler).to receive(:retrieve_all_tickets).and_return(503) }
+      before(:each) { allow(RequestHandler).to receive(:get_input).and_return('v') }
+
+      specify { expect { ApplicationController.menu_control }.to_output(/^.*(503).*$/) }
+    end
+
+    context ': leads to the error handler when receiving error responses ' do
+      before(:each) { allow(RequestHandler).to receive(:api_requester).and_return(400) }
+      before(:each) { allow(RequestHandler).to receive(:retrieve_all_tickets).and_return(400) }
+      before(:each) { allow(RequestHandler).to receive(:get_input).and_return('v') }
+
+      specify { expect { ApplicationController.menu_control }.to_output(/^.*(400).*$/) }
+    end
+  end
+end
+
 
 RSpec.describe ApplicationModel do
   let(:page_limit) { 25 }

@@ -120,6 +120,19 @@ RSpec.describe ApplicationModel do
     context "expect an invalid input to return an empty array" do
       specify { expect(ApplicationModel.paginator("error_input", page_limit).length).to eq(0) }
     end
+
+    context "expect subarrays to have have the page limit number of elements" do
+      specify { expect(ApplicationModel.paginator((1..100).to_a, page_limit)[0].length).to eq(page_limit) }
+    end
+
+    context "expect subarrays to have have the page limit number of elements" do
+      specify { expect(ApplicationModel.paginator((1..100).to_a, page_limit)[1].length).to eq(page_limit) }
+    end
+
+    # context "expect subarrays to have have the page limit number of elements" do
+    #   specify { expect { |e| ApplicationModel.paginator((1..100).to_a, page_limit).each(e.length).to yield_successive_args(25,25,25,75) }
+    # end
+
   end
 end
 

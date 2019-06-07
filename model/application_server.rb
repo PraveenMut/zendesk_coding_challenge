@@ -1,7 +1,6 @@
 require 'HTTP'
 require 'JSON'
 
-
 class RequestHandler
   @@tickets = nil
   @@error_message = nil
@@ -43,5 +42,22 @@ end
 
 class ApplicationModel
   def self.paginator(ary, page_limit)
+    return [] unless ary.class == Array
+
+    resultant_ary = []
+    number_of_pages = (ary.length.to_f / page_limit.to_f).ceil
+    subarray_index = 0
+    element_index = 0
+    number_of_pages.times do
+      resultant_ary << []
+    end
+    ary.each do |subary|
+      if (element_index % page_limit).zero? && element_index.nonzero? && element_index != ary.length
+        subarray_index += 1
+      end
+      resultant_ary[subarray_index] << subary
+      element_index += 1
+    end
+    resultant_ary
   end
 end

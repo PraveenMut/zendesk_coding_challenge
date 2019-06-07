@@ -6,7 +6,6 @@ require './view/application_view.rb'
 # Retrieves data from the model, processes it, displaying either a failure message
 # or the resultant data to the view.
 class ApplicationController
-  @@input = nil
   @@page_number = 1
   @forbidden_response = "Authentication failed, check your credentials"
   @not_found_response = "API endpoint access failure"
@@ -16,15 +15,16 @@ class ApplicationController
 
   def self.get_input  
     print "Please enter input: "
-    @@input = gets().strip
+    input = gets().strip
+    input
   end
 
-  def self.menu_control   # retrieves user input and then drives program flow
-    running = true
+  def self.menu_control  
+    running = true    # retrieves user input and then drives program flow
     ApplicationView.welcome_screen
     while running
-      get_input()
-      if @@input == "v" || @@input == "V"
+      if get_input == "v" || get_input == "V"
+        ApplicationView.load_all_tickets
         res = RequestHandler.retrieve_all_tickets()
           if res == 401
             ApplicationView.error_handler(@forbidden_response, res)
@@ -35,12 +35,14 @@ class ApplicationController
           elsif res == 400
             ApplicationView.error_handler(@unknown_response, res)
           else
+            running = false
             ApplicationModel.sanitised_response = res["tickets"]
             show_all()
           end
-      elsif @@input == "s" || @@input == "S"
+      elsif get_input == "s" || get_input == "S"
+        running = false
         select_ticket_menu()
-      elsif @@input == "q" || @@input == "Q"
+      elsif get_input == "q" || get_input == "Q"
         running = false
         ApplicationView.quit_message
       else
@@ -50,10 +52,19 @@ class ApplicationController
     end
   end
 
+  def self.select_ticket_menu
+    p "At ticket menu"
+    0
+  end
+
   def self.show_all      # a method to show all the tickets and drive program flow for showing all tickets
+    p "At show all"
+    0
   end
 
   def self.show_single   # a method to show a single ticket and also drive program flow based on user input for a single ticket
+    p "At show single"
+    0
   end
 
   def self.run_main      # the main execution point for the application. This is where it begins.

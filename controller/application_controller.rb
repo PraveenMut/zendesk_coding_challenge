@@ -20,8 +20,9 @@ class ApplicationController
     input
   end
 
+  # retrieves user input and then drives program flow
   def self.menu_control  
-    running = true    # retrieves user input and then drives program flow
+    running = true    
     ApplicationView.welcome_screen
     while running
       if get_input == "v" || get_input == "V"
@@ -58,16 +59,46 @@ class ApplicationController
     return 0
   end
 
-  def self.show_all      # a method to show all the tickets and drive program flow for showing all tickets
-    p "At show all"
-    0
+  # a method to show all the tickets and drive program flow for showing all tickets
+  def self.show_all
+    page_offset = current_page - 1
+    running = true
+    @@paginated_array = ApplicationModel.display_readifer(ApplicationModel.retrieve_tickets_data[page_offset])
+    total_pages = ApplicationModel.retrieve_tickets_data.length
+    while running
+      ApplicationView.show_all_tickets(@@paginated_array)
+      if get_input == 'N' || get_input == 'n'
+        if current_page > total_pages
+          ApplicationView.end_of_list = true
+        else
+          @@current_page += 1
+          page_offset += 1
+        end
+      elsif get_input == 'P' || get_input = 'p'
+        if @@current_page = 1
+          ApplicationView.start_of_list = true
+        else
+          @@current_page -= 1
+          page_offset -= 1
+        end
+      elsif get_input == 'q' || get_input == 'Q'
+        ApplicationView.quit_message
+      elsif get_input == 'm' || get_input == 'M'
+        running = false
+        menu_control
+      else
+        ApplicationView.input_error_handler
+      end
+    end
   end
 
-  def self.show_single   # a method to show a single ticket and also drive program flow based on user input for a single ticket
+  # a method to show a single ticket and also drive program flow based on user input for a single ticket
+  def self.show_single   
     p "At show single"
     0
   end
 
-  def self.run_main      # the main execution point for the application. This is where it begins.
+  # a method to show a single ticket and also drive program flow based on user input for a single ticket
+  def self.run_main
   end
 end

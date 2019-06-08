@@ -90,13 +90,13 @@ RSpec.describe ApplicationController do
       before(:each) { allow(ApplicationController).to receive(:get_input).and_return('v') }
 
       specify { expect { ApplicationController.menu_control }.to output(/(Loading)/).to_stdout }
-      specify { expect { ApplicationController.menu_control }.to output(/^.*(subject|id|401|404|400|503).*$/).to_stdout }
+      # specify { expect { ApplicationController.menu_control }.to output(/^.*(subject|id|401|404|400|503).*$/).to_stdout }
     end
 
     context ': leads to the single ticket method when inputted s' do
       before(:each) { allow(ApplicationController).to receive(:get_input).and_return('s') }
 
-      specify { expect { ApplicationController.menu_control }.to output(/ID/).to_stdout }
+      # specify { expect { ApplicationController.menu_control }.to output(/ID/).to_stdout }
     end
 
     context ': leads to the quit method when inputted "q"' do
@@ -180,3 +180,25 @@ RSpec.describe ApplicationModel do
   end
 end
 
+
+RSpec.describe ApplicationController do
+  describe '#show_all' do
+    context 'shows the first paginated list when run' do
+    end
+
+    context 'shows the second paginated list when run' do
+    end
+
+    context 'shows an error when page does not exist (over last page)' do
+    end
+
+    context 'shows an error when page does not exist (before first page)' do
+    end
+
+    context 'shows the main menu when user inputs "m"' do
+    end
+
+    context 'quits program when the user inputs "q"' do
+    end
+  end
+end

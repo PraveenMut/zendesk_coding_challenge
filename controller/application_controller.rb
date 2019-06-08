@@ -6,7 +6,8 @@ require './view/application_view.rb'
 # Retrieves data from the model, processes it, displaying either a failure message
 # or the resultant data to the view.
 class ApplicationController
-  @@page_number = 1
+  @@current_page = 1
+  @@paginated_array = nil
   @forbidden_response = "Authentication failed, check your credentials"
   @not_found_response = "API endpoint access failure"
   @server_error_response = "API unavailable at this time, check again later"

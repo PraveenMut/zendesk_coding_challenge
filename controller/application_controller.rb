@@ -94,7 +94,19 @@ class ApplicationController
 
   # a method to show a single ticket and also drive program flow based on user input for a single ticket
   def self.show_single
-    p "at show single"
+    @@input = nil
+    ticket_data = ApplicationModel.retrieve_tickets_data
+    ApplicationView.show_single_ticket(ticket_data)
+    get_input()
+    if @@input == 'M' || @@input == 'm'
+      menu_control()
+    elsif @@input == 'A' || @@input == 'a'
+      select_ticket_menu()
+    elsif @@input == 'Q' || @@input == 'q'
+      ApplicationView.quit_message
+    else
+      ApplicationView.input_error_handler
+    end
   end
 
   # the main execution point for the application. This is where it begins.

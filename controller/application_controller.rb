@@ -8,7 +8,8 @@ require 'pry'
 # or the resultant data to the view.
 class ApplicationController
   @@input = nil
-  @@page_number = 1
+  @@current_page = 1
+  @@paginated_array = nil
   @forbidden_response = "Authentication failed, check your credentials"
   @not_found_response = "API endpoint access failure"
   @server_error_response = "API unavailable at this time, check again later"
@@ -37,7 +38,7 @@ class ApplicationController
             ApplicationView.error_handler(@unknown_response, res)
           else
             ApplicationModel.sanitised_response = res["tickets"]
-            show_all()
+            paginate_tickets
             return false
           end
       elsif @@input == "s" || @@input == "S"
@@ -87,9 +88,17 @@ class ApplicationController
     end
   end
 
+  def self.paginate_tickets
+    @@paginated_array = ApplicationModel.paginator(ApplicationModel.retrieve_tickets_data, 25)
+    show_all()
+  end
+
   # a method to show all the tickets and drive program flow for showing all tickets
   def self.show_all
-    p "at show all" 
+    @@input = nil
+    page_offset = @@current_page - 1
+    current_ticket_data = @@paginated_array[page_offset]
+    ApplicationView.show_all_tickets(current_ticket_data, page_offset)
   end
 
   # a method to show a single ticket and also drive program flow based on user input for a single ticket

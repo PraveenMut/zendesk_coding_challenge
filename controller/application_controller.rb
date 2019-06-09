@@ -19,7 +19,8 @@ class ApplicationController
     @@input = gets().strip
   end
 
-  def self.menu_control   # retrieves user input and then drives program flow
+  # retrieves user input and then drives program flow
+  def self.menu_control
     running = true
     ApplicationView.welcome_screen
     while running
@@ -37,9 +38,11 @@ class ApplicationController
           else
             ApplicationModel.sanitised_response = res["tickets"]
             show_all()
+            running = false
           end
       elsif @@input == "s" || @@input == "S"
         select_ticket_menu()
+        running = false
       elsif @@input == "q" || @@input == "Q"
         running = false
         ApplicationView.quit_message
@@ -50,12 +53,23 @@ class ApplicationController
     end
   end
 
-  def self.show_all      # a method to show all the tickets and drive program flow for showing all tickets
+  def self.select_ticket_menu
+    p "at show ticket menu"
   end
 
-  def self.show_single   # a method to show a single ticket and also drive program flow based on user input for a single ticket
+  # a method to show all the tickets and drive program flow for showing all tickets
+  def self.show_all
+    p "at show all" 
   end
 
-  def self.run_main      # the main execution point for the application. This is where it begins.
+  # a method to show a single ticket and also drive program flow based on user input for a single ticket
+  def self.show_single
+    p "at show single"
+  end
+
+  # the main execution point for the application. This is where it begins.
+  def self.run_main      
   end
 end
+
+ApplicationController.menu_control

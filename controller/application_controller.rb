@@ -105,7 +105,7 @@ class ApplicationController
       ApplicationView.show_all_tickets(current_ticket_data, page_offset)
       show_all
     elsif @@input == 'P' || @@input == 'p'
-      @current_page -= 1
+      @@current_page -= 1
       ApplicationView.show_all_tickets(current_ticket_data, page_offset)
       show_all
     elsif @@input == 'S' || @@input == 's'

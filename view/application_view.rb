@@ -42,7 +42,12 @@ class ApplicationView
     print ".\n"
   end
 
-  def self.show_all_tickets
+  def self.show_all_tickets(incoming_ticket_data, page_number)
+    incoming_ticket_data.each do |ticket|
+      p "Ticket ID: #{ticket["id"]} with subject #{ticket["subject"]}"
+    end
+    print "Select new option"
+    return 0
   end
 
   def self.show_ticket_menu

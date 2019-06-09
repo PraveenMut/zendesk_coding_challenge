@@ -56,6 +56,7 @@ class ApplicationController
     @@input = nil
     ApplicationView.show_ticket_menu
     get_input()
+    ApplicationView.load_single_ticket(@@input)
     res = RequestHandler.retrieve_single_ticket(@@input)
     if res == 401
       ApplicationView.error_handler(@forbidden_response, res)

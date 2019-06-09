@@ -48,6 +48,10 @@ class ApplicationView
   def self.show_single_ticket
   end
 
+  def self.input_error_handler
+    print "\nYou have entered an erroneous input. Please try again\n"
+  end
+
   def self.error_handler(message, error_code)
     if !message.nil? || !error_code.nil?
       print "\nSorry! We have encountered an error: #{message} the error code is #{error_code}\n"
@@ -56,5 +60,10 @@ class ApplicationView
       print "\nSorry! An unknown error has occured. Please restart the program.\n"
       return -1
     end
+  end
+
+  def self.quit_message
+    print "\n"
+    abort("Thank you for visiting the Zendesk Ticket Viewer. Goodbye!\n\n")
   end
 end

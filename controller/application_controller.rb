@@ -21,9 +21,8 @@ class ApplicationController
 
   # retrieves user input and then drives program flow
   def self.menu_control
-    running = true
     ApplicationView.welcome_screen
-    while running
+    while true
       get_input()
       if @@input == "v" || @@input == "V"
         res = RequestHandler.retrieve_all_tickets()
@@ -38,13 +37,12 @@ class ApplicationController
           else
             ApplicationModel.sanitised_response = res["tickets"]
             show_all()
-            running = false
+            return false
           end
       elsif @@input == "s" || @@input == "S"
         select_ticket_menu()
-        running = false
+        return false
       elsif @@input == "q" || @@input == "Q"
-        running = false
         ApplicationView.quit_message
       else
         ApplicationView.input_error_handler

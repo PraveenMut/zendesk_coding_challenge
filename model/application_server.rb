@@ -70,4 +70,12 @@ class ApplicationModel
     end
     resultant_ary
   end
+  
+  def self.display_readifer(ary)
+    ary_of_pure_hashes = []
+    ary.each do |hash|
+      ary_of_pure_hashes << hash
+    end
+    ary_of_pure_hashes
+  end
 end

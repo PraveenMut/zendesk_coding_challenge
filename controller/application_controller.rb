@@ -62,15 +62,23 @@ class ApplicationController
 
     if res == 401
       ApplicationView.error_handler(@forbidden_response, res)
+      return 1 if in_testing == true
+
       select_ticket_menu
     elsif res == 503
       ApplicationView.error_handler(@server_error_response, res)
+      return 1 if in_testing == true
+
       select_ticket_menu
     elsif res == 404
       ApplicationView.error_handler("Invalid Ticket ID, please enter again", "not found")
+      return -1 if in_testing == true
+      
       select_ticket_menu
     elsif res == 400 || res.class != Hash
       ApplicationView.error_handler(@unknown_response, res)
+      return 1 if in_testing == true
+
       select_ticket_menu
     else
       ApplicationModel.sanitised_response = res["ticket"]

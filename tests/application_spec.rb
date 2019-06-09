@@ -131,5 +131,27 @@ RSpec.describe ApplicationController do
     it 'successfully returns to show single ticket method' do
       expect(ApplicationController.select_ticket_menu(true, 1)).to eq(0)
     end
+
+    context 'successfully returns an error response to a 404 message' do
+      specify { expect(ApplicationController.select_ticket_menu(true, 5000)).to eq(-1) }
+    end
+
+    context 'successfully a returns an error response to all other messages' do
+      before(:each) { allow(RequestHandler).to receive(:retrieve_single_ticket).and_return(400) }
+
+      specify { expect(ApplicationController.select_ticket_menu(true, 6)).to eq(1) }
+    end
+
+    context 'successfully a returns an error response to all other messages' do
+      before(:each) { allow(RequestHandler).to receive(:retrieve_single_ticket).and_return(503) }
+
+      specify { expect(ApplicationController.select_ticket_menu(true, 6)).to eq(1) }
+    end
+
+    context 'successfully a returns an error response to all other messages' do
+      before(:each) { allow(RequestHandler).to receive(:retrieve_single_ticket).and_return(401) }
+
+      specify { expect(ApplicationController.select_ticket_menu(true, 6)).to eq(1) }
+    end
   end
 end

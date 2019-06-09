@@ -69,5 +69,3 @@ class ApplicationController
   def self.run_main      
   end
 end
-
-ApplicationController.menu_control

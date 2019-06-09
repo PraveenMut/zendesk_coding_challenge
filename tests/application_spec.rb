@@ -162,12 +162,12 @@ end
 # end
 
 RSpec.describe ApplicationModel do
-  let(:subarray_of_hashes) { [[{},{},{}]] }
-  let(:expected_result) { [{},{},{}] }
+  let(:subarray_of_hashes) { [[{}],[{}],[{}]] }
+  let(:expected_result) { [[{}], [{}], [{}]] }
   describe "#display_readifer" do
     it "returns an array of hashes" do
-      expect(ApplicationModel.readifer(subarray_of_hashes)).to match_array([{},{},{}])
-      expect(ApplicationModel.readifer(subarray_of_hashes).length).not_to eq(1)
+      expect(ApplicationModel.display_readifer(subarray_of_hashes)).to match_array([[{}], [{}], [{}]])
+      expect(ApplicationModel.display_readifer(subarray_of_hashes).length).not_to eq(1)
     end
   end
 end

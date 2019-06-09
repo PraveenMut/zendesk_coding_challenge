@@ -25,7 +25,7 @@ class RequestHandler
         return 400
       end
     end
-    @@tickets = JSON.parse(http_response)
+    @@tickets = JSON.parse(http_response, symbolize_names: true)
     return @@tickets
   end
 

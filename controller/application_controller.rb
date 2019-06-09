@@ -37,7 +37,7 @@ class ApplicationController
           elsif res == 400
             ApplicationView.error_handler(@unknown_response, res)
           else
-            ApplicationModel.sanitised_response = res["tickets"]
+            ApplicationModel.sanitised_response = res[:tickets]
             paginate_tickets
             return false
           end
@@ -82,7 +82,7 @@ class ApplicationController
 
       select_ticket_menu
     else
-      ApplicationModel.sanitised_response = res["ticket"]
+      ApplicationModel.sanitised_response = res[:ticket]
       show_single
       return 0
     end
@@ -101,7 +101,7 @@ class ApplicationController
     @@current_page = @@paginated_array.length if @@current_page > @@paginated_array.length
 
     page_offset = @@current_page - 1
-    current_ticket_data = @@paginated_array[page_offset]
+    current_ticket_data = ApplicationModel.display_readifer(@@paginated_array[page_offset])
     ApplicationView.show_all_tickets(current_ticket_data, @@current_page)
     get_input
     if @@input == 'N' || @@input == 'n'
@@ -142,3 +142,5 @@ class ApplicationController
   def self.run_main      
   end
 end
+
+ApplicationController.menu_control

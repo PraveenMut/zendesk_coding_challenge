@@ -1,4 +1,6 @@
 require 'pry'
+require 'formatador'
+
 class ApplicationView
   @@total_pages = nil
 
@@ -54,9 +56,7 @@ class ApplicationView
     elsif page_number < 1
       print "\n You are already at the start of the tickets list"
     else
-      incoming_ticket_data.each do |ticket|
-        p "Ticket ID: #{ticket["id"]} with subject #{ticket["subject"]}"
-      end
+      Formatador.display_table(incoming_ticket_data, [:id, :submitter_id, :subject, :updated_at, :status])
     end
     print "\nSelect a new option\n\n"
     return 0
@@ -68,11 +68,11 @@ class ApplicationView
 
   def self.show_single_ticket(ticket_data)
     print "\nThank you! Here is the ticket:\n"
-    print "\nTicket Subject: #{ticket_data["subject"]}\n"
+    print "\nTicket Subject: #{ticket_data[:subject]}\n"
     print "\nTicket Description:\n"
-    print "#{ticket_data["description"]}"
-    print "\n\nTicket Created: #{ticket_data["created_at"]} "
-    print "\n\nStatus: #{ticket_data["status"]}"
+    print "#{ticket_data[:description]}"
+    print "\n\nTicket Created: #{ticket_data[:created_at]} "
+    print "\n\nStatus: #{ticket_data[:status]}"
     print "\n------------------------------------"
     print "\n\nWhat would you like to do now?\n"
     print "\n[m] Enter M to return the main menu\n"

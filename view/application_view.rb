@@ -1,3 +1,4 @@
+require 'pry'
 class ApplicationView
   @@total_pages = nil
 
@@ -48,10 +49,16 @@ class ApplicationView
   end
 
   def self.show_all_tickets(incoming_ticket_data, page_number)
-    incoming_ticket_data.each do |ticket|
-      p "Ticket ID: #{ticket["id"]} with subject #{ticket["subject"]}"
+    if page_number > @@total_pages
+      print "\nYou have reached the end!\n\n"
+    elsif page_number < 1
+      print "\n You are already at the start of the tickets list"
+    else
+      incoming_ticket_data.each do |ticket|
+        p "Ticket ID: #{ticket["id"]} with subject #{ticket["subject"]}"
+      end
     end
-    print "Select new option"
+    print "\nSelect a new option\n"
     return 0
   end
 

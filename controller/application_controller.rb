@@ -99,15 +99,16 @@ class ApplicationController
     @@input = nil
     page_offset = @@current_page - 1
     current_ticket_data = @@paginated_array[page_offset]
-    ApplicationView.show_all_tickets(current_ticket_data, page_offset)
+    ApplicationView.show_all_tickets(current_ticket_data, @@current_page) unless @@paginated_array.length < @@current_page || @@current_page < 1
+
     get_input
     if @@input == 'N' || @@input == 'n'
       @@current_page += 1
-      ApplicationView.show_all_tickets(current_ticket_data, page_offset)
+      ApplicationView.show_all_tickets(current_ticket_data, @@current_page)
       show_all
     elsif @@input == 'P' || @@input == 'p'
       @@current_page -= 1
-      ApplicationView.show_all_tickets(current_ticket_data, page_offset)
+      ApplicationView.show_all_tickets(current_ticket_data, @@current_page)
       show_all
     elsif @@input == 'S' || @@input == 's'
       select_ticket_menu

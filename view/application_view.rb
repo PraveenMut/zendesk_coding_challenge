@@ -49,7 +49,7 @@ class ApplicationView
   end
 
   def self.show_all_tickets(incoming_ticket_data, page_number)
-    if page_number > @@total_pages
+    if page_number >= @@total_pages
       print "\nYou have reached the end!\n\n"
     elsif page_number < 1
       print "\n You are already at the start of the tickets list"
@@ -58,7 +58,7 @@ class ApplicationView
         p "Ticket ID: #{ticket["id"]} with subject #{ticket["subject"]}"
       end
     end
-    print "\nSelect a new option\n"
+    print "\nSelect a new option\n\n"
     return 0
   end
 

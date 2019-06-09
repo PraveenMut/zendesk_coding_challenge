@@ -7,10 +7,6 @@ class RequestHandlerTest < RequestHandler
 end
 
 class ApplicationControllerTest < ApplicationController
-  attr_accessor :input_test
-  def initialize
-    @input_test = @@input
-  end
 end
 
 class ApplicationViewTest < ApplicationView
@@ -130,3 +126,10 @@ RSpec.describe ApplicationModel do
   end
 end
 
+RSpec.describe ApplicationController do
+  describe '#select_ticket_menu' do
+    it 'successfully returns to show single ticket method' do
+      expect(ApplicationController.select_ticket_menu(true, 1)).to eq(0)
+    end
+  end
+end

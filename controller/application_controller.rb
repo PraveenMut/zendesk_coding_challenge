@@ -52,12 +52,14 @@ class ApplicationController
     end
   end
 
-  def self.select_ticket_menu
+  def self.select_ticket_menu(in_testing=false, ticket_id=nil)
     @@input = nil
     ApplicationView.show_ticket_menu
     get_input()
     ApplicationView.load_single_ticket(@@input)
     res = RequestHandler.retrieve_single_ticket(@@input)
+    res = RequestHandler.retrieve_single_ticket(ticket_id) if in_testing == true
+
     if res == 401
       ApplicationView.error_handler(@forbidden_response, res)
       select_ticket_menu

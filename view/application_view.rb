@@ -1,4 +1,9 @@
 class ApplicationView
+  @@total_pages = nil
+
+  def self.total_number_of_pages=(incoming_data)
+    @@total_pages = incoming_data
+  end
 
   def self.welcome_screen
     print "\n\n"

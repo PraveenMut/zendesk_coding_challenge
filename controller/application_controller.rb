@@ -90,6 +90,7 @@ class ApplicationController
 
   def self.paginate_tickets
     @@paginated_array = ApplicationModel.paginator(ApplicationModel.retrieve_tickets_data, 25)
+    ApplicationView.total_number_of_pages = @@paginated_array.length
     show_all
   end
 

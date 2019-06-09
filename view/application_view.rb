@@ -45,6 +45,10 @@ class ApplicationView
   def self.show_all_tickets
   end
 
+  def self.show_ticket_menu
+    print "\nEnter Ticket ID\n"
+  end
+
   def self.show_single_ticket
   end
 

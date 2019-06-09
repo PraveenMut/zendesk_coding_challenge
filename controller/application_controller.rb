@@ -52,7 +52,11 @@ class ApplicationController
   end
 
   def self.select_ticket_menu
-    p "at show ticket menu"
+    @@input = nil
+    ApplicationView.show_ticket_menu
+    get_input()
+    res = RequestHandler.retrieve_single_ticket(@@input)
+    p res["ticket"]
   end
 
   # a method to show all the tickets and drive program flow for showing all tickets
@@ -69,3 +73,5 @@ class ApplicationController
   def self.run_main      
   end
 end
+
+ApplicationController.menu_control

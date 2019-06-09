@@ -1,5 +1,6 @@
 require 'HTTP'
 require 'JSON'
+require 'pry'
 
 class RequestHandler
   @@tickets = nil
@@ -70,7 +71,16 @@ class ApplicationModel
     end
     resultant_ary
   end
-  
+
+  def self.date_formatter(input)
+    return input unless input.class == Array
+
+    input.each do |ticket|
+      ticket[:updated_at] = ticket[:updated_at].gsub!(/([T])/, " ").gsub!(/([Z])/, "")
+    end
+    @@sanitised_response = input
+  end
+
   def self.display_readifer(ary)
     ary_of_pure_hashes = []
     ary.each do |hash|

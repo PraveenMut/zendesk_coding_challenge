@@ -37,7 +37,7 @@ class ApplicationController
           elsif res == 400
             ApplicationView.error_handler(@unknown_response, res)
           else
-            ApplicationModel.sanitised_response = res[:tickets]
+            ApplicationModel.date_formatter(res[:tickets])
             paginate_tickets
             return false
           end
@@ -89,6 +89,7 @@ class ApplicationController
   end
 
   def self.paginate_tickets
+    ApplicationModel
     @@paginated_array = ApplicationModel.paginator(ApplicationModel.retrieve_tickets_data, 25)
     ApplicationView.total_number_of_pages = @@paginated_array.length
     show_all

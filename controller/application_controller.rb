@@ -90,7 +90,7 @@ class ApplicationController
 
   def self.paginate_tickets
     @@paginated_array = ApplicationModel.paginator(ApplicationModel.retrieve_tickets_data, 25)
-    show_all()
+    show_all
   end
 
   # a method to show all the tickets and drive program flow for showing all tickets
@@ -99,6 +99,22 @@ class ApplicationController
     page_offset = @@current_page - 1
     current_ticket_data = @@paginated_array[page_offset]
     ApplicationView.show_all_tickets(current_ticket_data, page_offset)
+    get_input
+    if @@input == 'N' || @@input == 'n'
+      @@current_page += 1
+      ApplicationView.show_all_tickets(current_ticket_data, page_offset)
+      show_all
+    elsif @@input == 'P' || @@input == 'p'
+      @current_page -= 1
+      ApplicationView.show_all_tickets(current_ticket_data, page_offset)
+      show_all
+    elsif @@input == 'S' || @@input == 's'
+      select_ticket_menu
+    elsif @@input == 'M' || @@input == 'm'
+      menu_control
+    elsif @@input == 'Q' || @@input == 'q'
+      ApplicationView.quit_message
+    end
   end
 
   # a method to show a single ticket and also drive program flow based on user input for a single ticket

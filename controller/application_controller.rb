@@ -93,10 +93,12 @@ class ApplicationController
   end
 
   # a method to show a single ticket and also drive program flow based on user input for a single ticket
-  def self.show_single
+  def self.show_single(in_testing=false)
     @@input = nil
     ticket_data = ApplicationModel.retrieve_tickets_data
     ApplicationView.show_single_ticket(ticket_data)
+    return ticket_data if in_testing == true
+
     get_input()
     if @@input == 'M' || @@input == 'm'
       menu_control()

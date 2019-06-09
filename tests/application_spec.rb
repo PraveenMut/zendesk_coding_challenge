@@ -2,15 +2,7 @@ require 'rspec'
 require './model/application_server.rb'
 require './controller/application_controller.rb'
 require './view/application_view.rb'
-
-class RequestHandlerTest < RequestHandler
-end
-
-class ApplicationControllerTest < ApplicationController
-end
-
-class ApplicationViewTest < ApplicationView
-end
+require_relative 'helpers'
 
 RSpec.describe RequestHandler do
   describe '#api_requester' do
@@ -152,6 +144,19 @@ RSpec.describe ApplicationController do
       before(:each) { allow(RequestHandler).to receive(:retrieve_single_ticket).and_return(401) }
 
       specify { expect(ApplicationController.select_ticket_menu(true, 6)).to eq(1) }
+    end
+  end
+end
+
+RSpec.describe ApplicationController do
+  context "setup tests" do
+    let(:expected_data) { extract_mock_data }
+    subject { expected_data }
+      describe "#show_single_ticket" do
+        context "the function returns the correct data" do
+          before(:each) { allow(ApplicationModel).to receive(:retrieve_tickets_data).and_return(subject) }
+          specify { expect(ApplicationController.show_single).to match(/(5.json)/) }
+      end
     end
   end
 end

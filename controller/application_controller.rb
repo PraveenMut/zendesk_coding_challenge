@@ -1,5 +1,6 @@
 require './model/application_server.rb'
 require './view/application_view.rb'
+require 'pry'
 
 # The Controller from MVC architectural pattern.
 # Controls the program flow and handles user input.
@@ -56,7 +57,23 @@ class ApplicationController
     ApplicationView.show_ticket_menu
     get_input()
     res = RequestHandler.retrieve_single_ticket(@@input)
-    p res["ticket"]
+    if res == 401
+      ApplicationView.error_handler(@forbidden_response, res)
+      select_ticket_menu
+    elsif res == 503
+      ApplicationView.error_handler(@server_error_response, res)
+      select_ticket_menu
+    elsif res == 404
+      ApplicationView.error_handler("Invalid Ticket ID, please enter again", "not found")
+      select_ticket_menu
+    elsif res == 400 || res.class != Hash
+      ApplicationView.error_handler(@unknown_response, res)
+      select_ticket_menu
+    else
+      ApplicationModel.sanitised_response = res["ticket"]
+      show_single
+      return 0
+    end
   end
 
   # a method to show all the tickets and drive program flow for showing all tickets

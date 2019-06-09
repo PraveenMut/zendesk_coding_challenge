@@ -148,15 +148,26 @@ RSpec.describe ApplicationController do
   end
 end
 
-RSpec.describe ApplicationController do
-  context "setup tests" do
-    let(:expected_data) { extract_mock_data }
-    subject { expected_data }
-      describe "#show_single_ticket" do
-        context "the function returns the correct data" do
-          before(:each) { allow(ApplicationModel).to receive(:retrieve_tickets_data).and_return(subject) }
-          specify { expect(ApplicationController.show_single).to match(/(5.json)/) }
-      end
+# RSpec.describe ApplicationController do
+#   context "setup tests" do
+#     let(:expected_data) { extract_mock_data }
+#     subject { expected_data }
+#       describe "#show_single_ticket" do
+#         context "the function returns the correct data" do
+#           before(:each) { allow(ApplicationModel).to receive(:retrieve_tickets_data).and_return(subject) }
+#           specify { expect(ApplicationController.show_single).to match(/(5.json)/) }
+#       end
+#     end
+#   end
+# end
+
+RSpec.describe ApplicationModel do
+  let(:subarray_of_hashes) { [[{},{},{}]] }
+  let(:expected_result) { [{},{},{}] }
+  describe "#display_readifer" do
+    it "returns an array of hashes" do
+      expect(ApplicationModel.readifer(subarray_of_hashes)).to match_array([{},{},{}])
+      expect(ApplicationModel.readifer(subarray_of_hashes).length).not_to eq(1)
     end
   end
 end

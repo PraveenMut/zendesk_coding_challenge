@@ -58,7 +58,12 @@ class ApplicationView
     else
       Formatador.display_table(incoming_ticket_data, [:id, :submitter_id, :subject, :updated_at, :status])
     end
-    print "\nSelect a new option\n\n"
+    print "\nPlease select an option\n"
+    print "\n[n] Enter N to go the next page"
+    print "\n[p] Enter P to go the previous page"
+    print "\n[s] Enter S to show a single ticket by its id"
+    print "\n[m] Enter M to go the main menu"
+    print "\n[q] Enter Q to quit the program\n\n"
     return 0
   end
 

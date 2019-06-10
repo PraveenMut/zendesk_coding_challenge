@@ -27,6 +27,7 @@ class ApplicationController
     while true
       get_input()
       if @@input == "v" || @@input == "V"
+        ApplicationView.load_all_tickets
         res = RequestHandler.retrieve_all_tickets()
           if res == 401
             ApplicationView.error_handler(@forbidden_response, res)

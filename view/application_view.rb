@@ -52,12 +52,12 @@ class ApplicationView
 
   def self.show_all_tickets(incoming_ticket_data, page_number)
     if page_number >= @@total_pages
-      print "\nYou have reached the end!\n\n"
-    elsif page_number < 1
-      print "\n You are already at the start of the tickets list"
-    else
-      Formatador.display_table(incoming_ticket_data, [:id, :submitter_id, :subject, :updated_at, :status])
+      print "\n You have reached the end!\n"
+    elsif page_number <= 1
+      print "\n You are the start of the tickets list\n"
     end
+    print "\n Page #{page_number}\n"
+    Formatador.display_table(incoming_ticket_data, [:id, :submitter_id, :subject, :updated_at, :status])
     print "\nPlease select an option\n"
     print "\n[n] Enter N to go the next page"
     print "\n[p] Enter P to go the previous page"

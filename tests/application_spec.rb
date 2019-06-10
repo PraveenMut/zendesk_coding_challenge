@@ -18,8 +18,8 @@ RSpec.describe RequestHandler do
     it ': populates a response successfully for controller to work on' do
       expect(RequestHandler.api_requester(true)).not_to be_falsey
       expect(RequestHandler.api_requester(nil, 1)).not_to be_falsey
-      expect(RequestHandler.api_requester(true)["tickets"].length).to eq(100)
-      expect(RequestHandler.api_requester(nil, 1)).to include("ticket")
+      expect(RequestHandler.api_requester(true)[:tickets].length).to eq(100)
+      expect(RequestHandler.api_requester(nil, 1)).to include(:ticket)
     end
   end
 end
@@ -35,7 +35,7 @@ end
 RSpec.describe RequestHandler do
   describe "#retrieve_all_tickets" do
     it ": ensures that all tickets are retrieved safely without handling issues" do
-      expect(RequestHandler.retrieve_all_tickets).to include("tickets")
+      expect(RequestHandler.retrieve_all_tickets).to include(:tickets)
     end
   end
 end
@@ -43,8 +43,8 @@ end
 RSpec.describe RequestHandler do
   describe "#retrieve_single_ticket" do
     it ": ensures that a single ticket is retrieved safely without handling issues" do
-      expect(RequestHandler.retrieve_single_ticket(1)).to include("ticket")
-      expect(RequestHandler.retrieve_single_ticket(100)).to include("ticket")
+      expect(RequestHandler.retrieve_single_ticket(1)).to include(:ticket)
+      expect(RequestHandler.retrieve_single_ticket(100)).to include(:ticket)
       expect(RequestHandler.retrieve_single_ticket(5000)).to eq(404)
     end
   end
@@ -93,6 +93,19 @@ RSpec.describe ApplicationModel do
 
     context "expect the resultant parent array length to be 8" do
       specify { expect(ApplicationModel.paginator((1..200).to_a, page_limit).length).to eq(8) }
+    end
+
+    context "expect the resultant parent array length to be 5" do
+      specify { expect(ApplicationModel.paginator((1..101).to_a, page_limit).length).to eq(5) }
+    end
+
+    context "expect the resultant parent array to be 40" do
+      specify { expect(ApplicationModel.paginator((1..1000).to_a, page_limit).length).to eq(40) }
+    end
+
+    context "expect the resultant last child array to only have 1 element" do
+      specify { expect(ApplicationModel.paginator((1..101).to_a, page_limit)[4].length).to eq(1) }
+      specify { expect(ApplicationModel.paginator((1..1001).to_a, page_limit)[40].length).to eq(1) }
     end
 
     context "expect the resultant parent array length to be empty" do

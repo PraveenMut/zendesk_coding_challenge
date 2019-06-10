@@ -52,7 +52,7 @@ class ApplicationModel
     @@sanitised_response
   end
 
-  def self.paginator(ary, page_limit)
+  def self.paginator(ary, page_limit=25)
     return [] unless ary.class == Array
 
     resultant_ary = []

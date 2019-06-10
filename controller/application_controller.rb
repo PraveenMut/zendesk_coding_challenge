@@ -145,4 +145,3 @@ class ApplicationController
   end
 end
 
-ApplicationController.menu_control

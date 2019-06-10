@@ -91,9 +91,11 @@ class RequestHandler
   end
 
   def self.next_page_requester(current_page)
+    return [] unless current_page.class == Integer
+    
     request_page = ((current_page * 25)/100) + 1
     http_response = HTTP.auth(@@authentication).get(@@req_url + "tickets.json?page=#{request_page}")
-    return http_response if http_response.status != 200
+    return [] if http_response.status != 200
 
     parsed_response = JSON.parse(http_response, symbolize_names: true)
     next_page_data = parsed_response[:tickets]

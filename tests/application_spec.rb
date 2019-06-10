@@ -14,6 +14,15 @@ RSpec.describe RequestHandler do
 end
 
 RSpec.describe RequestHandler do
+  describe '#next_page_requester' do
+    it ': returns a an empty array when an page an invalid id is inputted' do
+      expect(RequestHandler.next_page_requester('J').class).to eq(Array)
+      expect(RequestHandler.next_page_requester('J').length).to eq(0)
+    end
+  end
+end
+
+RSpec.describe RequestHandler do
   describe '#api_requester' do
     it ': populates a response successfully for controller to work on' do
       expect(RequestHandler.api_requester(true)).not_to be_falsey

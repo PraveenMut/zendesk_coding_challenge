@@ -5,6 +5,7 @@ require 'pry'
 class RequestHandler
   @@tickets = nil
   @@error_message = nil
+  @@is_next_page = true
   @@req_url = "https://praveenmuthu.zendesk.com/api/v2/"
   @@authentication = "Basic cHJhdmVlbi5tdXRAZ21haWwuY29tOkphNHBUOUQzN0RkUFR5OHU4aEZV"
 
@@ -27,6 +28,7 @@ class RequestHandler
       end
     end
     @@tickets = JSON.parse(http_response, symbolize_names: true)
+    @@is_next_page = false unless @@tickets[:next_page].nil?
     return @@tickets
   end
 
@@ -39,6 +41,27 @@ class RequestHandler
     api_requester(true)
     return @@tickets
   end
+
+  def self.next_page_requester(current_page)
+    return false unless @@is_next_page
+
+    request_page = ((current_page * 25)/100) + 1
+    http_response = HTTP.auth(@@authentication).get(@@req_url + "tickets.json?page=#{request_page}")
+    return http_response if http_response.status != 200
+
+    parsed_response = JSON.parse(http_response, symbolize_names: true)
+    next_page_data = parsed_response[:tickets]
+    current_data = ApplicationModel.retrieve_tickets_data
+    next_page_data.each do |ticket|
+      current_data << ticket
+    end
+    ApplicationModel.sanitised_response = current_data
+    @@is_next_page = false if parsed_response[:next_page].nil?
+
+    true
+  end
+
+
 end
 
 class ApplicationModel
@@ -89,3 +112,5 @@ class ApplicationModel
     ary_of_pure_hashes
   end
 end
+
+RequestHandler.api_requester(true)

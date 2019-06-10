@@ -15,6 +15,18 @@ end
 
 RSpec.describe RequestHandler do
   describe '#next_page_requester' do
+    context ': it successfully returns an hashes of new tickets' do
+      before(:each) { ApplicationModel.sanitised_response = [{}, {}, {}] }
+        specify { expect(RequestHandler.next_page_requester(2)).to be_truthy }
+      after(:all) do
+        expect(ApplicationModel.retrieve_tickets_data.length).to eq(103)
+      end
+    end
+  end
+end
+
+RSpec.describe RequestHandler do
+  describe '#next_page_requester' do
     it ': returns a an empty array when an page an invalid id is inputted' do
       expect(RequestHandler.next_page_requester('J').class).to eq(Array)
       expect(RequestHandler.next_page_requester('J').length).to eq(0)

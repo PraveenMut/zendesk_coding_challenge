@@ -40,6 +40,7 @@ class ApplicationModel
       ticket[:updated_at] = ticket[:updated_at].gsub!(/([T])/, " ").gsub!(/([Z])/, "")
     end
     @@sanitised_response = input
+    return input
   end
 
   def self.display_readifer(ary)

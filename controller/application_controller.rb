@@ -99,6 +99,10 @@ class ApplicationController
   def self.show_all
     @@input = nil
     @@current_page = 1 if @@current_page < 1
+    if @@current_page == @@paginated_array.length && RequestHandler.next_page_check
+      RequestHandler.next_page_requester(@@current_page)
+      paginate_tickets 
+    end
     @@current_page = @@paginated_array.length if @@current_page > @@paginated_array.length
 
     page_offset = @@current_page - 1

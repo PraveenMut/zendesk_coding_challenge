@@ -6,25 +6,23 @@ This application has been tested to run on MacOS X/UNIX based machines. However,
 
 Due to the nature of dependencies and file systems between operating systems, it is highly recommended that you run Zendesk CLi on MacOS based systems. 
 
-# To install:
 ## Prerequisites:
  - Ruby 2.5.3 or over
 
 To check what version of Ruby you have installed, in the terminal, enter:
 
 ```
-Ruby -v
+ruby -v
 ```
-
 If you do not have Ruby installed:
 ```
 brew install ruby
 ```
 
 For further information, please refer to the installation guides of Ruby:
-<a href="https://www.ruby-lang.org/en/documentation/installation" target="_blank">Installation Guide</a>
+- <a href="https://www.ruby-lang.org/en/documentation/installation" target="_blank">Installation Guide</a>
 
-Afterwards, `git clone` the repo into your preferred directory. 
+Afterwards, `git clone` the repository into your preferred directory. 
 
 This application is designed to run with minimal dependencies for portability. The dependencies are as follows:
 - HTTP
@@ -34,7 +32,7 @@ This application is designed to run with minimal dependencies for portability. T
 
 The rubygems HTTP & JSON should be preinstalled with most installations of Ruby. To check whether they exist:
 ```
-gem list | grep -E “http|json|” 
+gem list | grep -E “http|json” 
 ```
 If either only one or none appear, please install these gems:
 ```
@@ -45,7 +43,7 @@ gem install ‘json’
 ```
 Afterwards, install:
 ```
-Gem install formatador
+gem install formatador
 ```
 
 # Execution

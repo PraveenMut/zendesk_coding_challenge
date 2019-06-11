@@ -4,7 +4,7 @@ Zendesk CLi is a lightweight & highly performant viewer client that shows all ti
 # Installation
 This application has been tested to run on MacOS X/UNIX based machines. However, due to the cross platform nature of Ruby (as it is an interpreted language), the application may work on other operating systems. 
 
-Due to the nature of dependencies and file systems between operating systems, it is highly recommended that you run Zendesk CLi on MacOS based systems. 
+Due to the nature of dependencies and file systems between operating systems, <b>it is strongly recommended that you run Zendesk CLi on MacOS based systems</b>. 
 
 ## Prerequisites:
  - Ruby 2.5.3 or over

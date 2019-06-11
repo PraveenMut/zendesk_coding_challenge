@@ -6,9 +6,9 @@ Zendesk CLi is a lightweight & highly performant viewer client that shows all ti
 - Execution
 - Architecture
 - Process
-  - API requests
-  - Pagination Methods
   - Reasoning behind methods
+  - API Requests
+  - Pagination methods
   - Testing
   - Challenges
 - Requirement checklist
@@ -69,3 +69,23 @@ ruby controller/application_controller.rb
 ```
 
 Violia!
+
+# Architecture
+The architecture of any software application or system is crucial and provides the foundation to build off. Poor software architecture often leads to substantial technical debt and the inability to add future features in an agile fashion. 
+
+I considered multiple options, 
+
+MVP (Model View Presenter)
+MVC (Model View Controller)
+MVC with Passive View
+Event driven Architecture
+
+I eventually chose the Model-View-Controller with Passive View. The architecture diagram is as follows:
+
+<img src="./img/mvc-diagram.png">
+
+The reasoning behind this choice is that the MVC architectural pattern is one of the widely used patterns and provides effective decoupling between the business logic, data retrieval and the presentation of such information to the user. However, the main reason behind the passive view was to further decouple the view from the model to ensure that the view has no ability to mutate to model, which allows for more room for error. 
+
+This does involve additional work as data binding is done at the controller side as the view has minimal logic as possible.
+
+Other patterns like the Event Driven architecture required substantially higher complexity and seemed to over-complicate the project of this size. Therefore, the MVC with passive view remained the clear choice. 

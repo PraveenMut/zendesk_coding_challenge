@@ -75,10 +75,10 @@ The architecture of any software application or system is crucial and provides t
 
 I considered multiple options, 
 
-MVP (Model View Presenter)
-MVC (Model View Controller)
-MVC with Passive View
-Event driven Architecture
+- MVP (Model View Presenter)
+- MVC (Model View Controller)
+- MVC with Passive View
+- Event driven Architecture
 
 I eventually chose the Model-View-Controller with Passive View. The architecture diagram is as follows:
 
@@ -89,3 +89,13 @@ The reasoning behind this choice is that the MVC architectural pattern is one of
 This does involve additional work as data binding is done at the controller side as the view has minimal logic as possible.
 
 Other patterns like the Event Driven architecture required substantially higher complexity and seemed to over-complicate the project of this size. Therefore, the MVC with passive view remained the clear choice. 
+
+In summary:
+- The MVC model allows for effective decoupling of business logic, data and presentation. This ensures that the structure of the program is well organised, there is a clear separation of concerns and testing can done effectively without affecting other functions.
+
+In the Zendesk CLi: 
+- Model - handles server requests and the treatment & processing of data. Statefulness through storing responses similar to a database. This is Similar to rails, node or go server.
+
+- Controller - Queries the model and ultimately drives the program from user input. It maintains statefulness through state containers (similar to redux).
+
+- Presentation - Presents the views to the user. Little logic as possible, completely decoupled from the model. Controller feeds in the view to show.

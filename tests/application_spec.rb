@@ -2,20 +2,9 @@ require 'rspec'
 require './model/application_server.rb'
 require './controller/application_controller.rb'
 require './view/application_view.rb'
-require_relative 'helpers.rb'
+require_relative 'helpers'
 
-class RequestHandlerTest < RequestHandler
-end
-
-class ApplicationControllerTest < ApplicationController
-  def self.retrieve_paginated_array
-    @@paginated_array
-  end
-end
-
-class ApplicationViewTest < ApplicationView
-end
-
+# Describes the api requester handling requests
 RSpec.describe RequestHandler do
   describe '#api_requester' do
     it ': returns a 200 response for all requests' do
@@ -25,13 +14,41 @@ RSpec.describe RequestHandler do
   end
 end
 
+# Tests if the next_page_requester successfully pushes tickets into the existing array
+# of hashes
+RSpec.describe RequestHandler do
+  describe '#next_page_requester' do
+    context ': it successfully returns an hashes of new tickets' do
+      before(:each) { ApplicationModel.sanitised_response = [{}, {}, {}] }
+        specify { expect(RequestHandler.next_page_requester(2)).to be_truthy }
+      after(:all) do
+        expect(ApplicationModel.retrieve_tickets_data.length).to eq(103)
+      end
+    end
+  end
+end
+
+# Tests whether an invalid input does not result in an catastrophic failure
+# of the application and instead returns an empty array which gets appended to
+# master
+RSpec.describe RequestHandler do
+  describe '#next_page_requester' do
+    it ': returns a an empty array when an page an invalid id is inputted' do
+      expect(RequestHandler.next_page_requester('J').class).to eq(Array)
+      expect(RequestHandler.next_page_requester('J').length).to eq(0)
+    end
+  end
+end
+
+# ensures that api requester does not result in a nil response
+# for happy paths
 RSpec.describe RequestHandler do
   describe '#api_requester' do
     it ': populates a response successfully for controller to work on' do
       expect(RequestHandler.api_requester(true)).not_to be_falsey
       expect(RequestHandler.api_requester(nil, 1)).not_to be_falsey
-      expect(RequestHandler.api_requester(true)["tickets"].length).to eq(100)
-      expect(RequestHandler.api_requester(nil, 1)).to include("ticket")
+      expect(RequestHandler.api_requester(true)[:tickets].length).to eq(100)
+      expect(RequestHandler.api_requester(nil, 1)).to include(:ticket)
     end
   end
 end
@@ -44,10 +61,11 @@ RSpec.describe RequestHandler do
   end
 end
 
+# ensures that tickets that are requested do have the tickets key
 RSpec.describe RequestHandler do
   describe "#retrieve_all_tickets" do
     it ": ensures that all tickets are retrieved safely without handling issues" do
-      expect(RequestHandler.retrieve_all_tickets).to include("tickets")
+      expect(RequestHandler.retrieve_all_tickets).to include(:tickets)
     end
   end
 end
@@ -55,9 +73,9 @@ end
 RSpec.describe RequestHandler do
   describe "#retrieve_single_ticket" do
     it ": ensures that a single ticket is retrieved safely without handling issues" do
-      expect(RequestHandler.retrieve_single_ticket(1)).to include("ticket")
-      expect(RequestHandler.retrieve_single_ticket(100)).to include("ticket")
-      expect(RequestHandler.retrieve_single_ticket(5000)).to eq(404)
+      expect(RequestHandler.retrieve_single_ticket(1)).to include(:ticket) # happy path test
+      expect(RequestHandler.retrieve_single_ticket(100)).to include(:ticket) # happy path test
+      expect(RequestHandler.retrieve_single_ticket(5000)).to eq(404) # sad path test
     end
   end
 end
@@ -67,11 +85,12 @@ RSpec.describe ApplicationView do
     it ": handles errors correctly" do
       expect(ApplicationView.error_handler("Cannot access API", 400)).to eq(1)
       expect(ApplicationView.error_handler("Authentication failed, please check your credentials", 401)).to eq(1)
-      expect(ApplicationView.error_handler(nil, nil)).to eq(-1)
+      expect(ApplicationView.error_handler(nil, nil)).to eq(-1) # ensures for no catastrophic failures
     end
   end
 end
 
+# application view test to see if the error handler does indeed actually output errors
 RSpec.describe ApplicationView do
   describe "#error_handler" do
     context ": displays errors correctly to screen" do
@@ -84,68 +103,8 @@ RSpec.describe ApplicationView do
   end
 end
 
-# RSpec.describe ApplicationController do
-#   describe '#menu_control' do
-#     context ': leads to the get all tickets method when inputted "v"' do
-#       before(:each) { allow(ApplicationController).to receive(:get_input).and_return('v') }
-
-#       specify { expect { ApplicationController.menu_control }.to output(/(Loading)/).to_stdout }
-#       # specify { expect { ApplicationController.menu_control }.to output(/^.*(subject|id|401|404|400|503).*$/).to_stdout }
-#     end
-
-#     context ': leads to the single ticket method when inputted s' do
-#       before(:each) { allow(ApplicationController).to receive(:get_input).and_return('s') }
-
-#       # specify { expect { ApplicationController.menu_control }.to output(/ID/).to_stdout }
-#     end
-
-#     context ': leads to the quit method when inputted "q"' do
-#       before(:each) { allow(ApplicationController).to receive(:get_input).and_return('q') }
-
-#       specify { expect { ApplicationController.menu_control }.to output(/Goodbye!/).to_stdout }
-#     end
-
-#     context ': leads to the invalid input method when inputted any other character' do
-#       before(:each) { allow(ApplicationController).to receive(:get_input).and_return('k') }
-
-#       specify { expect { ApplicationController.menu_control }.to output(/^.*(erroneous|input).*$/).to_stdout }
-#     end
-
-#     context ': leads to the error handler when receiving error responses ' do
-#       before(:each) { allow(RequestHandler).to receive(:api_requester).and_return(401) }
-#       before(:each) { allow(RequestHandler).to receive(:retrieve_all_tickets).and_return(401) }
-#       before(:each) { allow(RequestHandler).to receive(:get_input).and_return('v') }
-
-#       specify { expect { ApplicationController.menu_control }.to_output(/^.*(401).*$/) }
-#     end
-
-#     context ': leads to the error handler when receiving error responses ' do
-#       before(:each) { allow(RequestHandler).to receive(:api_requester).and_return(404) }
-#       before(:each) { allow(RequestHandler).to receive(:retrieve_all_tickets).and_return(404) }
-#       before(:each) { allow(RequestHandler).to receive(:get_input).and_return('v') }
-
-#       specify { expect { ApplicationController.menu_control }.to_output(/^.*(404).*$/) }
-#     end
-    
-#     context ': leads to the error handler when receiving error responses ' do
-#       before(:each) { allow(RequestHandler).to receive(:api_requester).and_return(503) }
-#       before(:each) { allow(RequestHandler).to receive(:retrieve_all_tickets).and_return(503) }
-#       before(:each) { allow(RequestHandler).to receive(:get_input).and_return('v') }
-
-#       specify { expect { ApplicationController.menu_control }.to_output(/^.*(503).*$/) }
-#     end
-
-#     context ': leads to the error handler when receiving error responses ' do
-#       before(:each) { allow(RequestHandler).to receive(:api_requester).and_return(400) }
-#       before(:each) { allow(RequestHandler).to receive(:retrieve_all_tickets).and_return(400) }
-#       before(:each) { allow(RequestHandler).to receive(:get_input).and_return('v') }
-
-#       specify { expect { ApplicationController.menu_control }.to_output(/^.*(400).*$/) }
-#     end
-#   end
-# end
-
-
+# paginator tests -- ensure that the paginator is working correctly and paginates
+# any sort of array of arrays
 RSpec.describe ApplicationModel do
   let(:page_limit) { 25 }
   describe "#paginator" do
@@ -155,6 +114,19 @@ RSpec.describe ApplicationModel do
 
     context "expect the resultant parent array length to be 8" do
       specify { expect(ApplicationModel.paginator((1..200).to_a, page_limit).length).to eq(8) }
+    end
+
+    context "expect the resultant parent array length to be 5" do
+      specify { expect(ApplicationModel.paginator((1..101).to_a, page_limit).length).to eq(5) }
+    end
+
+    context "expect the resultant parent array to be 40" do
+      specify { expect(ApplicationModel.paginator((1..1000).to_a, page_limit).length).to eq(40) }
+    end
+
+    context "expect the resultant last child array to only have 1 element" do
+      specify { expect(ApplicationModel.paginator((1..101).to_a, page_limit)[4].length).to eq(1) }
+      specify { expect(ApplicationModel.paginator((1..1001).to_a, page_limit)[40].length).to eq(1) }
     end
 
     context "expect the resultant parent array length to be empty" do
@@ -180,20 +152,61 @@ RSpec.describe ApplicationModel do
   end
 end
 
+# happy path test to ensure that the date formatter works as expected
+RSpec.describe ApplicationModel do
+  let(:input) { [{:updated_at => "2019-06-03T08:19:28Z"}] }
+      it "returns the hash with a clean date and time with any letters" do
+        expect(ApplicationModel.date_formatter(input)).to eq([{:updated_at => "2019-06-03 08:19:28"}])
+    end
+end
 
+# simulates user input essentially by having breakpoints
+# this ensures that if errors do occur, they are handled gracefully 
 RSpec.describe ApplicationController do
-  describe '#show_all' do
-    # context 'shows the correct paginated array first' do
-    #   before(:each) do 
-    #     allow(ApplicationModel).to receive(:display_readifier).and_return(test_tickets) 
-    #     ApplicationController.show_all
-    #   end
+  describe '#select_ticket_menu' do
+    it 'successfully returns to show single ticket method' do
+      expect(ApplicationController.select_ticket_menu(true, 1)).to eq(0)
+    end
 
-    #   specify { expect(ApplicationControllerTest.retrieve_paginated_array).to eq(test_tickets) }
-    # end  
+    context 'successfully returns an error response to a 404 message' do
+      specify { expect(ApplicationController.select_ticket_menu(true, 5000)).to eq(-1) }
+    end
 
-    context 'shows the first paginated list when run' do
-      specify { expect { ApplicationController.show_all }.to_output(/^.*(Sample|Ticket).*$/) }
+    context 'successfully a returns an error response to all other messages' do
+      before(:each) { allow(RequestHandler).to receive(:retrieve_single_ticket).and_return(400) }
+
+      specify { expect(ApplicationController.select_ticket_menu(true, 6)).to eq(1) }
+    end
+
+    context 'successfully a returns an error response to all other messages' do
+      before(:each) { allow(RequestHandler).to receive(:retrieve_single_ticket).and_return(503) }
+
+      specify { expect(ApplicationController.select_ticket_menu(true, 6)).to eq(1) }
+    end
+
+    context 'successfully a returns an error response to all other messages' do
+      before(:each) { allow(RequestHandler).to receive(:retrieve_single_ticket).and_return(401) }
+
+      specify { expect(ApplicationController.select_ticket_menu(true, 6)).to eq(1) }
     end
   end
 end
+
+## Attempted to mock data and see if the show_single_ticket method 
+## outputted with a 5.json
+## Kept getting errors when attempting to use extract_mock_data. Aborted due to 
+## time constraints.
+# RSpec.describe ApplicationController do
+#   context "setup tests" do
+#     let(:expected_data) { extract_mock_data }
+#     subject { expected_data }
+#       describe "#show_single_ticket" do
+#         context "the function returns the correct data" do
+#           before(:each) { allow(ApplicationModel).to receive(:retrieve_tickets_data).and_return(subject) }
+#           specify { expect(ApplicationController.show_single).to match(/(5.json)/) }
+#       end
+#     end
+#   end
+# end
+
+

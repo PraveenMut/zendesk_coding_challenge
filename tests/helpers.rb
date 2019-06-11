@@ -1,10 +1,15 @@
 require 'JSON'
 
-raw_json_data = File.read(File.join(Dir.pwd, 'tests','example_ticket.json'))
-processed_json_data = JSON.parse(raw_json_data, :symbolize_names => true)
-tickets_data = processed_json_data[:tickets]
-test_tickets = []
+# class RequestHandlerTest < RequestHandler
+# end
 
-tickets_data.each do |hash|
-  test_tickets << hash
+# class ApplicationControllerTest < ApplicationController
+# end
+
+# class ApplicationViewTest < ApplicationView
+# end
+
+def extract_mock_data
+  raw_json_data = File.read(File.join(Dir.pwd, 'tests', 'example.json'))
+  processed_json_data = JSON.parse(raw_json_data).to_s
 end

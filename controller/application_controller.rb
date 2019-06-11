@@ -1,11 +1,15 @@
 require './model/application_server.rb'
 require './view/application_view.rb'
+## For debugging and testing purposes only
+## use binding.pry as entry point to debug in the code
+# require 'pry'
 
 # The Controller from MVC architectural pattern.
 # Controls the program flow and handles user input.
 # Retrieves data from the model, processes it, displaying either a failure message
 # or the resultant data to the view.
 class ApplicationController
+  @@input = nil
   @@current_page = 1
   @@paginated_array = nil
   @forbidden_response = "Authentication failed, check your credentials"
@@ -16,16 +20,15 @@ class ApplicationController
 
   def self.get_input  
     print "Please enter input: "
-    input = gets().strip
-    input
+    @@input = gets.strip
   end
 
   # retrieves user input and then drives program flow
-  def self.menu_control  
-    running = true    
+  def self.menu_control
     ApplicationView.welcome_screen
-    while running
-      if get_input == "v" || get_input == "V"
+    while true
+      get_input()
+      if @@input == "v" || @@input == "V"
         ApplicationView.load_all_tickets
         res = RequestHandler.retrieve_all_tickets()
           if res == 401
@@ -37,15 +40,14 @@ class ApplicationController
           elsif res == 400
             ApplicationView.error_handler(@unknown_response, res)
           else
-            running = false
-            ApplicationModel.sanitised_response = res["tickets"]
-            show_all()
+            ApplicationModel.date_formatter(res[:tickets])
+            paginate_tickets
+            return false
           end
-      elsif get_input == "s" || get_input == "S"
-        running = false
-        select_ticket_menu()
-      elsif get_input == "q" || get_input == "Q"
-        running = false
+      elsif @@input == "s" || @@input == "S"
+        select_ticket_menu
+        return false
+      elsif @@input == "q" || @@input == "Q"
         ApplicationView.quit_message
       else
         ApplicationView.input_error_handler
@@ -54,51 +56,102 @@ class ApplicationController
     end
   end
 
-  def self.select_ticket_menu
-    p "At ticket menu"
-    return 0
+  def self.select_ticket_menu(in_testing=false, ticket_id=nil)
+    @@input = nil
+    ApplicationView.show_ticket_menu
+    get_input
+    ApplicationView.load_single_ticket(@@input)
+    res = RequestHandler.retrieve_single_ticket(@@input)
+    res = RequestHandler.retrieve_single_ticket(ticket_id) if in_testing == true
+
+    if res == 401
+      ApplicationView.error_handler(@forbidden_response, res)
+      return 1 if in_testing == true
+
+      select_ticket_menu
+    elsif res == 503
+      ApplicationView.error_handler(@server_error_response, res)
+      return 1 if in_testing == true
+
+      select_ticket_menu
+    elsif res == 404
+      ApplicationView.error_handler("Invalid Ticket ID, please enter again", "not found")
+      return -1 if in_testing == true
+      
+      select_ticket_menu
+    elsif res == 400 || res.class != Hash
+      ApplicationView.error_handler(@unknown_response, res)
+      return 1 if in_testing == true
+
+      select_ticket_menu
+    else
+      ApplicationModel.sanitised_response = res[:ticket]
+      show_single
+      return 0
+    end
+  end
+
+  def self.paginate_tickets
+    @@paginated_array = ApplicationModel.paginator(ApplicationModel.retrieve_tickets_data, 25)
+    ApplicationView.total_number_of_pages = @@paginated_array.length
+    show_all
   end
 
   # a method to show all the tickets and drive program flow for showing all tickets
   def self.show_all
-    page_offset = current_page - 1
-    running = true
-    @@paginated_array = ApplicationModel.display_readifer(ApplicationModel.retrieve_tickets_data[page_offset])
-    total_pages = ApplicationModel.retrieve_tickets_data.length
-    while running
-      ApplicationView.show_all_tickets(@@paginated_array)
-      if get_input == 'N' || get_input == 'n'
-        if current_page > total_pages
-          ApplicationView.end_of_list = true
-        else
-          @@current_page += 1
-          page_offset += 1
-        end
-      elsif get_input == 'P' || get_input = 'p'
-        if @@current_page = 1
-          ApplicationView.start_of_list = true
-        else
-          @@current_page -= 1
-          page_offset -= 1
-        end
-      elsif get_input == 'q' || get_input == 'Q'
-        ApplicationView.quit_message
-      elsif get_input == 'm' || get_input == 'M'
-        running = false
-        menu_control
-      else
-        ApplicationView.input_error_handler
-      end
+    @@input = nil
+    @@current_page = 1 if @@current_page < 1
+    if @@current_page == @@paginated_array.length && RequestHandler.next_page_check
+      RequestHandler.next_page_requester(@@current_page)
+      paginate_tickets 
+    end
+    @@current_page = @@paginated_array.length if @@current_page > @@paginated_array.length
+
+    page_offset = @@current_page - 1
+    current_ticket_data = ApplicationModel.display_readifer(@@paginated_array[page_offset])
+    ApplicationView.show_all_tickets(current_ticket_data, @@current_page)
+    get_input
+    if @@input == 'N' || @@input == 'n'
+      @@current_page += 1
+      show_all
+    elsif @@input == 'P' || @@input == 'p'
+      @@current_page -= 1
+      show_all
+    elsif @@input == 'S' || @@input == 's'
+      select_ticket_menu
+    elsif @@input == 'M' || @@input == 'm'
+      menu_control
+    elsif @@input == 'Q' || @@input == 'q'
+      ApplicationView.quit_message
+    else
+      ApplicationView.input_error_handler
+      show_all
     end
   end
 
   # a method to show a single ticket and also drive program flow based on user input for a single ticket
-  def self.show_single   
-    p "At show single"
-    0
+  def self.show_single(in_testing=false)
+    @@input = nil
+    ticket_data = ApplicationModel.retrieve_tickets_data
+    ApplicationView.show_single_ticket(ticket_data)
+    return ticket_data if in_testing == true
+
+    get_input
+    if @@input == 'M' || @@input == 'm'
+      menu_control
+    elsif @@input == 'A' || @@input == 'a'
+      select_ticket_menu
+    elsif @@input == 'Q' || @@input == 'q'
+      ApplicationView.quit_message
+    else
+      ApplicationView.input_error_handler
+    end
   end
 
-  # a method to show a single ticket and also drive program flow based on user input for a single ticket
+  # the main execution point for the application. This is where the magic begins.
   def self.run_main
+   menu_control
   end
 end
+
+ApplicationController.run_main

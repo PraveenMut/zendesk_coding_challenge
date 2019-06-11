@@ -1,3 +1,4 @@
+<p><img src="./img/zendesk_screenshot.png"></p>
 # Zendesk CLi Ticket Viewer
 # Introduction
 Zendesk CLi is a lightweight & highly performant viewer client that shows all tickets that an agent has in their account. In addition, it has the ability to show pertinent details of a single ticket. The application interfaces with ZenDesk’s tickets API as the ‘source of truth’ to provide the associated tickets for the viewer to process and show. 
@@ -70,6 +71,18 @@ ruby controller/application_controller.rb
 ```
 
 Violia!
+
+# Running Spec Tests
+To run spec tests, please follow the steps below:
+
+Step 1. Ensure that you are in the root working directory of the project
+Step 2. Open up controller/application_controller.rb
+Step 3. <b>Remove or comment the last line `ApplicationController.run_main`</b>
+Step 4. In the terminal, run:
+```
+rspec tests/application_spec.rb
+```
+The tests should run
 
 # Requirement Checklist
 

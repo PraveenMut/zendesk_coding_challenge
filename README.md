@@ -1,4 +1,5 @@
 <img src="./img/zendesk_screenshot.png" width="400" />
+
 # Zendesk CLi Ticket Viewer
 # Introduction
 Zendesk CLi is a lightweight & highly performant viewer client that shows all tickets that an agent has in their account. In addition, it has the ability to show pertinent details of a single ticket. The application interfaces with ZenDesk’s tickets API as the ‘source of truth’ to provide the associated tickets for the viewer to process and show. 

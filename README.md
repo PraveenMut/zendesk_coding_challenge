@@ -106,3 +106,9 @@ In the Zendesk CLi:
 - Controller - Queries the model and ultimately drives the program from user input. It maintains statefulness through state containers (similar to redux).
 
 - Presentation - Presents the views to the user. Little logic as possible, completely decoupled from the model. Controller feeds in the view to show.
+
+# Process
+## API Requests
+API requests were handled through a rubygem called 'HTTP' which purports to possess one of the fastest speeds for web requests. Basic auth was utilised and statically written into the model. Although this indeed does raise plenty of security concerns as it is visible in plain text, for the nature of this project using syncronous or asyncronous encryption (or environment variables) would make for an extremely cumbersome experience. Especially since as the credentials aren't highly sensitive (as it is a trial account, billing isn't an issue).
+
+Of course, in production more sophisicated security measures would be taken such as using API tokens with synchronous encryption (through a shared secret key).

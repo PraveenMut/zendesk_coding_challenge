@@ -118,4 +118,8 @@ class RequestHandler
   def self.next_page_check
     @@is_next_page
   end
+
+  def self.set_is_next_page=(bool)
+    @@is_next_page = bool
+  end
 end

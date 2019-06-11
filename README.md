@@ -3,16 +3,16 @@ Zendesk CLi is a lightweight & highly performant viewer client that shows all ti
 
 # Contents:
 - <a href="#introduction">Installation</a>
-- <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#introduction">Execution
-- <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#introduction">Requirement checklist</a>
-- <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#choosing-cli">Choosing CLi</a>
-- <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#introduction">Architecture</a>
-- <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#process">Process</a>
-  - <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#api-requests">API Requests</a>
-  - <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#pagination-methods-scability">Pagination methods (Scalability)</a>
-  - <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#testing">Testing</a>
-  - <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#challenges">Challenges</a>
-- <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#futures-updates">Future updates</a>
+- <a href="#execution">Execution
+- <a href="#requirement-checklist">Requirement checklist</a>
+- <a href="#choosing-cli">Choosing CLi</a>
+- <a href="#introduction">Architecture</a>
+- <a href="#process">Process</a>
+  - <a href="#api-requests">API Requests</a>
+  - <a href="#pagination-methods">Pagination methods (Scalability)</a>
+  - <a href="#testing">Testing</a>
+  - <a href="#challenges">Challenges</a>
+- <a href="#future-updates">Future updates</a>
 
 
 # Installation

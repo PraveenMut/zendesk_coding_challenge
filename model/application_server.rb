@@ -119,11 +119,7 @@ class RequestHandler
     @@is_next_page
   end
 
-  def self.display_readifer(ary=@@sanitised_response)
-    ary_of_pure_hashes = []
-    ary.each do |hash|
-      ary_of_pure_hashes << hash
-    end
-    ary_of_pure_hashes
+  def self.set_is_next_page=(bool)
+    @@is_next_page = bool
   end
 end

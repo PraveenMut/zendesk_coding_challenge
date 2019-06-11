@@ -25,6 +25,8 @@ class ApplicationController
 
   # retrieves user input and then drives program flow
   def self.menu_control
+    @@current_page = 1
+    RequestHandler.set_is_next_page = true
     ApplicationView.welcome_screen
     while true
       get_input()
@@ -145,6 +147,7 @@ class ApplicationController
       ApplicationView.quit_message
     else
       ApplicationView.input_error_handler
+      show_single
     end
   end
 

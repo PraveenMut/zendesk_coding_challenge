@@ -1,7 +1,11 @@
 require 'HTTP'
 require 'JSON'
-require 'pry'
+## For debugging and testing purposes only
+## use binding.pry as entry point to debug in the code
+# require 'pry'
 
+# The Application Model processes and stores the data in a 'makeshift' database.
+# Makes data ready to query from the controller.
 class ApplicationModel
   @@sanitised_response = nil
 
@@ -34,7 +38,7 @@ class ApplicationModel
   end
 
   def self.date_formatter(input)
-    return input unless input.class == Array || input.class == Hash
+    return input unless input.class == Array
 
     input.each do |ticket|
       ticket[:updated_at] = ticket[:updated_at].gsub!(/([T])/, " ").gsub!(/([Z])/, "")
@@ -52,6 +56,8 @@ class ApplicationModel
   end
 end
 
+# The 'server' class that deals with all requests from the external Zendesk API.
+# Also handles the requests for the next page, provided by input from the controller.
 class RequestHandler
   @@tickets = nil
   @@error_message = nil

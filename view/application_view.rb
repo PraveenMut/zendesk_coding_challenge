@@ -1,6 +1,11 @@
-require 'pry'
+## For debugging and testing purposes only
+## use binding.pry as entry point to debug in the code
+# require 'pry'
 require 'formatador'
 
+# The presentational view of the MVC architectural pattern.
+# This is a passive view and contains very little logic, aside from
+# the show all tickets method.
 class ApplicationView
   @@total_pages = nil
 

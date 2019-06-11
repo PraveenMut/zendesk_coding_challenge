@@ -1,6 +1,8 @@
 require './model/application_server.rb'
 require './view/application_view.rb'
-require 'pry'
+## For debugging and testing purposes only
+## use binding.pry as entry point to debug in the code
+# require 'pry'
 
 # The Controller from MVC architectural pattern.
 # Controls the program flow and handles user input.
@@ -130,8 +132,7 @@ class ApplicationController
   # a method to show a single ticket and also drive program flow based on user input for a single ticket
   def self.show_single(in_testing=false)
     @@input = nil
-    binding.pry
-    ticket_data = ApplicationModel.date_formatter(ApplicationModel.retrieve_tickets_data)
+    ticket_data = ApplicationModel.retrieve_tickets_data
     ApplicationView.show_single_ticket(ticket_data)
     return ticket_data if in_testing == true
 

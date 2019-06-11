@@ -5,10 +5,10 @@ Zendesk CLi is a lightweight & highly performant viewer client that shows all ti
 - Installation
 - Execution
 - Architecture
+- Choosing CLi
 - Process
-  - Reasoning behind methods
   - API Requests
-  - Pagination methods
+  - Pagination methods (Scalability)
   - Testing
   - Challenges
 - Requirement checklist
@@ -69,6 +69,13 @@ ruby controller/application_controller.rb
 ```
 
 Violia!
+
+# Choosing CLi
+
+I opted to build the application entirely in the command line as I have a deep affinity towards to the backend side of software development. I enjoy the elegance of well constructed systems and building an application through the command line allows to show the intracacies of software architecture. In addition, as I'm currently studying at a bootcamp that primarily uses Ruby, I decided to further hone down on my ruby skills. 
+
+Due to the elegant simplicity of the project, I decided to challenge myself by attempting to undertake the project in a BDD (TDD) fashion while using RSpec, a popular testing DSL for Ruby for the first time. This later return to a more unit testing style of development due to a mis-step during coding.
+
 
 # Architecture
 The architecture of any software application or system is crucial and provides the foundation to build off. Poor software architecture often leads to substantial technical debt and the inability to add future features in an agile fashion. 

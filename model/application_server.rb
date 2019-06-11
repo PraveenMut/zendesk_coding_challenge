@@ -40,7 +40,7 @@ class ApplicationModel
       ticket[:updated_at] = ticket[:updated_at].gsub!(/([T])/, " ").gsub!(/([Z])/, "")
     end
     @@sanitised_response = input
-    return input
+    input
   end
 
   def self.display_readifer(ary)
@@ -78,17 +78,17 @@ class RequestHandler
       end
     end
     @@tickets = JSON.parse(http_response, symbolize_names: true)
-    return @@tickets
+    @@tickets
   end
 
   def self.retrieve_single_ticket(ticket_id)
     ticket = api_requester(nil, ticket_id)
-    return ticket
+    ticket
   end
 
   def self.retrieve_all_tickets
     api_requester(true)
-    return @@tickets
+    @@tickets
   end
 
   def self.next_page_requester(current_page)

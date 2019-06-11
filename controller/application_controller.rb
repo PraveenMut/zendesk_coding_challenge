@@ -18,7 +18,7 @@ class ApplicationController
 
   def self.get_input  
     print "Please enter input: "
-    @@input = gets().strip
+    @@input = gets.strip
   end
 
   # retrieves user input and then drives program flow
@@ -43,7 +43,7 @@ class ApplicationController
             return false
           end
       elsif @@input == "s" || @@input == "S"
-        select_ticket_menu()
+        select_ticket_menu
         return false
       elsif @@input == "q" || @@input == "Q"
         ApplicationView.quit_message
@@ -131,11 +131,11 @@ class ApplicationController
     ApplicationView.show_single_ticket(ticket_data)
     return ticket_data if in_testing == true
 
-    get_input()
+    get_input
     if @@input == 'M' || @@input == 'm'
-      menu_control()
+      menu_control
     elsif @@input == 'A' || @@input == 'a'
-      select_ticket_menu()
+      select_ticket_menu
     elsif @@input == 'Q' || @@input == 'q'
       ApplicationView.quit_message
     else
@@ -147,3 +147,5 @@ class ApplicationController
   def self.run_main      
   end
 end
+
+ApplicationController.menu_control

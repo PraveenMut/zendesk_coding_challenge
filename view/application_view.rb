@@ -35,7 +35,7 @@ class ApplicationView
     sleep(0.5)
     print "."
     sleep(0.25)
-    print "."
+    print '.'
     sleep(0.175)
     print ".\n"
   end
@@ -43,9 +43,9 @@ class ApplicationView
   def self.load_single_ticket(ticket_id)
     print "\nThank you. Loading Ticket ID##{ticket_id}"
     sleep(0.5)
-    print " ."
+    print ' .'
     sleep(0.25)
-    print "."
+    print '.'
     sleep(0.175)
     print ".\n"
   end
@@ -93,10 +93,10 @@ class ApplicationView
   def self.error_handler(message, error_code)
     if !message.nil? || !error_code.nil?
       print "\nSorry! We have encountered an error: #{message} the error code is #{error_code}\n"
-      return 1
+      1
     else
       print "\nSorry! An unknown error has occured. Please restart the program.\n"
-      return -1
+      -1
     end
   end
 

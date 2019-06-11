@@ -57,7 +57,7 @@ class ApplicationController
   def self.select_ticket_menu(in_testing=false, ticket_id=nil)
     @@input = nil
     ApplicationView.show_ticket_menu
-    get_input()
+    get_input
     ApplicationView.load_single_ticket(@@input)
     res = RequestHandler.retrieve_single_ticket(@@input)
     res = RequestHandler.retrieve_single_ticket(ticket_id) if in_testing == true
@@ -121,13 +121,17 @@ class ApplicationController
       menu_control
     elsif @@input == 'Q' || @@input == 'q'
       ApplicationView.quit_message
+    else
+      ApplicationView.input_error_handler
+      show_all
     end
   end
 
   # a method to show a single ticket and also drive program flow based on user input for a single ticket
   def self.show_single(in_testing=false)
     @@input = nil
-    ticket_data = ApplicationModel.retrieve_tickets_data
+    binding.pry
+    ticket_data = ApplicationModel.date_formatter(ApplicationModel.retrieve_tickets_data)
     ApplicationView.show_single_ticket(ticket_data)
     return ticket_data if in_testing == true
 
@@ -143,9 +147,10 @@ class ApplicationController
     end
   end
 
-  # the main execution point for the application. This is where it begins.
-  def self.run_main      
+  # the main execution point for the application. This is where the magic begins.
+  def self.run_main
+   menu_control
   end
 end
 
-ApplicationController.menu_control
+ApplicationController.run_main

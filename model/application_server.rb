@@ -34,7 +34,7 @@ class ApplicationModel
   end
 
   def self.date_formatter(input)
-    return input unless input.class == Array
+    return input unless input.class == Array || input.class == Hash
 
     input.each do |ticket|
       ticket[:updated_at] = ticket[:updated_at].gsub!(/([T])/, " ").gsub!(/([Z])/, "")

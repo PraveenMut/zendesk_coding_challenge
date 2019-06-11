@@ -112,3 +112,23 @@ In the Zendesk CLi:
 API requests were handled through a rubygem called 'HTTP' which purports to possess one of the fastest speeds for web requests. Basic auth was utilised and statically written into the model. Although this indeed does raise plenty of security concerns as it is visible in plain text, for the nature of this project using syncronous or asyncronous encryption (or environment variables) would make for an extremely cumbersome experience. Especially since as the credentials aren't highly sensitive (as it is a trial account, billing isn't an issue).
 
 Of course, in production more sophisicated security measures would be taken such as using API tokens with synchronous encryption (through a shared secret key).
+
+## Pagination Methods
+Paginating through the entire ticket list was undoubtly the biggest component of this project. There were multiple approaches to tackle this problem:
+
+  - <b>Pure Thin client:</b> The client becomes merely a layer to the server and handles no logic by itself. Although this is indeed efficient as it removes any risk of failure at processing-time on the client side, it does open up to quite a bit of latency. This means that the client needs to maintain a connection (not persistent, rather the client <em>needs</em> to stay online to request any new pages). Although many users may not paginate entirely through the entire ticket list, the latency can add up when paginating through 2-4 pages which can significantly detract from the User Experience. Each request is at constant O(1) time. 
+
+  <b>Pure Fat client:<b> The client now handles all of the parsing, processing, storing for <b><em>all</b></em> tickets involved. In essence, the client becomes a mini version of the ZenDesk API. This does not require a connection to the internet when in pagination mode. However, this indeed can lead to processing errors and most importantly, storage. This method will clearly <b>not scale</b>, as it requires the client to download the <em>entire</em> ticket list which could be in the order of 10s of thousands. Initial request is at O(1) time but processing is at O(n) time.
+
+  <b>Progressive client:</b> I chose this method to for my pagination. It combines the best of both worlds, the thick and thin client-server architectures. Instead of requesting the entire dataset which cost both bandwidth and time, only the first small n tickets are downloaded, processed and displayed. Only when the client requests the l = ((n)/page_limit)-1 page, the next set of data is prefetched (preferrably asyncronously in the background) and then displayed when l+2 is requested, then it displayed.
+
+  The time complexity of my pagination function is O(n) = T(2n) for processing, unlike pure fat client, the retrieval time should always be constant O(1) as you are only retrieving a constant number of tickets. For small n, this approach provides <b>blazing fast</b> pagination, allows the client to be temporarily disconnected (mobile friendly) and the pagination not to be interrupted.
+
+  Thus, for the purposes of this project, I do believe the progressive client is highly scalable due to small file of the JSON involved (always under 1-2MB). However, to conclude, the pure thin client is the most ideal model when the data size (size complexity) becomes large. This is due to the asymptotic time complexity of Omega(n) of my processing in pagination (new pages need to be inserted to the master array). 
+
+## Testing 
+I wanted to thoroughly challenge myself by attempting RSpec and TDD for the first time in my as a bootcamp development student. I spent most of my time experimenting with RSpec, reading documentation, going through syntaxes, understanding how RSpec deals with mocks, spies and assertions. 
+
+However, due to the infinite recusive nature of my application (i.e. all of my menus which require continuous input from the user) it become extremely difficult to know what to use and thus become stuck in writing my tests which did not accurately reflect my code.
+
+After 

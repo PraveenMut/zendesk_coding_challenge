@@ -2,17 +2,17 @@
 Zendesk CLi is a lightweight & highly performant viewer client that shows all tickets that an agent has in their account. In addition, it has the ability to show pertinent details of a single ticket. The application interfaces with ZenDesk’s tickets API as the ‘source of truth’ to provide the associated tickets for the viewer to process and show. 
 
 # Contents:
-- Installation
-- Execution
-- Architecture
-- Choosing CLi
-- Process
-  - API Requests
-  - Pagination methods (Scalability)
-  - Testing
-  - Challenges
-- Requirement checklist
-- Future updates
+- <a href="#introduction">Installation</a>
+- <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#introduction">Execution
+- <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#introduction">Requirement checklist</a>
+- <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#choosing-cli">Choosing CLi</a>
+- <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#introduction">Architecture</a>
+- <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#process">Process</a>
+  - <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#api-requests">API Requests</a>
+  - <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#pagination-methods-scability">Pagination methods (Scalability)</a>
+  - <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#testing">Testing</a>
+  - <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#challenges">Challenges</a>
+- <a href="https://github.com/PraveenMut/zendesk_coding_challenge/tree/ticket_fetcher_final#futures-updates">Future updates</a>
 
 
 # Installation
@@ -69,6 +69,25 @@ ruby controller/application_controller.rb
 ```
 
 Violia!
+
+# Requirement Checklist
+
+Meets requirements:
+- No extra features are added. => Check
+- All required features have been attempted. => Check
+- Displays some knowledge of application design:
+  - Separation of concerns. => Check
+  - Simplicity. => Check
+- Handles basic errors:
+  - Displays a friendly error message if the API is unavailable or the response is invalid. => Check
+- Tells the user something is wrong if there is a program error. => Check
+
+- Includes tests.
+- UI is easy to use and displays ticket results clearly. => Check
+- Code demonstrates:
+  - Consistency. => Used Robocop, check
+  - Adherence to common standards. => Used Robocop, check
+
 
 # Choosing CLi
 
@@ -145,3 +164,9 @@ I did face quite a number of challenges as I want to push myself
 I did face a serious architectural misjudgement on Sunday where I implemented a method that was in an infinite loop and due to the main menu being an infinite loop, the application would not accept input of any kind.
 
 Thus, I reverted back to previous git commit, re-thought how to better implement methods that require continuous user input while also maintaining statefulness. The answer, component wide state containers (class variables in ruby), storing the state and then only mutating it once the function has run, a textbook case for recursive methods.
+
+
+# Future updates
+- Refactor pagination method, instead of using page_limit arrays, use `[start..finish]` using much more dynamic state fashion. This improves processing to O(1).
+
+- Better testing, simulating user input and mocks. This is was a very new field (the RSpec DSL) so creating a better framework for testing would be a definite improvement.

@@ -155,5 +155,3 @@ class ApplicationController
    menu_control
   end
 end
-
-ApplicationController.run_main

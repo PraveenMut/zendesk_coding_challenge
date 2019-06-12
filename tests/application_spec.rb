@@ -155,8 +155,12 @@ end
 # happy path test to ensure that the date formatter works as expected
 RSpec.describe ApplicationModel do
   let(:input) { [{:updated_at => "2019-06-03T08:19:28Z"}] }
-      it "returns the hash with a clean date and time with any letters" do
-        expect(ApplicationModel.date_formatter(input)).to eq([{:updated_at => "2019-06-03 08:19:28"}])
+  let(:input_hash) { {:updated_at => "2019-06-03T08:19:28Z", :created_at => "2019-06-03T08:19:28Z"} }
+    it "returns the hash with a clean date and time without any letters" do
+      expect(ApplicationModel.date_formatter(input)).to eq([{:updated_at => "2019-06-03 08:19:28"}])
+    end
+    it 'returns the hash with a clean date and time' do
+      expect(ApplicationModel.date_formatter(input_hash)).to eq({:updated_at => "2019-06-03 08:19:28", :created_at => "2019-06-03 08:19:28"})
     end
 end
 

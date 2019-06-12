@@ -29,10 +29,10 @@ class ApplicationController
     RequestHandler.set_is_next_page = true
     ApplicationView.welcome_screen
     while true
-      get_input()
+      get_input
       if @@input == "v" || @@input == "V"
         ApplicationView.load_all_tickets
-        res = RequestHandler.retrieve_all_tickets()
+        res = RequestHandler.retrieve_all_tickets
           if res == 401
             ApplicationView.error_handler(@forbidden_response, res)
           elsif res == 404

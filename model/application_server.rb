@@ -38,10 +38,15 @@ class ApplicationModel
   end
 
   def self.date_formatter(input)
-    return input unless input.class == Array
+    return input unless input.class == Array || input.class == Hash
 
-    input.each do |ticket|
-      ticket[:updated_at] = ticket[:updated_at].gsub!(/([T])/, " ").gsub!(/([Z])/, "")
+    if input.class == Array
+      input.each do |ticket|
+        ticket[:updated_at] = ticket[:updated_at].gsub!(/([T])/, " ").gsub!(/([Z])/, "")
+      end
+    else
+        input[:updated_at] = input[:updated_at].gsub!(/([T])/, " ").gsub!(/([Z])/, "")
+        input[:created_at] = input[:created_at].gsub!(/([T])/, " ").gsub!(/([Z])/, "")
     end
     @@sanitised_response = input
     input

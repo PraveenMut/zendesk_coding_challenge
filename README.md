@@ -49,14 +49,14 @@ This application is designed to run with minimal dependencies for portability. T
 
 The rubygems HTTP & JSON should be preinstalled with most installations of Ruby. To check whether they exist:
 ```
-gem list | grep -E “http|json” 
+gem list | grep -E "http|json"
 ```
 If either only one or none appear, please install these gems:
 ```
-gem install ‘http’
+gem install http
 ```
 ```
-gem install ‘json’
+gem install json
 ```
 Afterwards, install:
 ```

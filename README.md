@@ -24,7 +24,7 @@ This application has been tested to run on MacOS X/UNIX based machines. However,
 Due to the nature of dependencies and file systems between operating systems, <b>it is strongly recommended that you run Zendesk CLi on MacOS based systems</b>. 
 
 ## Prerequisites:
- - Ruby 2.5.3 or over
+ - Ruby 2.5.1 or over
 
 To check what version of Ruby you have installed, in the terminal, enter:
 

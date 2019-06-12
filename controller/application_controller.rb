@@ -147,7 +147,6 @@ class ApplicationController
       ApplicationView.quit_message
     else
       ApplicationView.input_error_handler
-      show_single
     end
   end
 
@@ -156,5 +155,3 @@ class ApplicationController
    menu_control
   end
 end
-
-ApplicationController.run_main

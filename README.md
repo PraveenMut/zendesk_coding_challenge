@@ -6,7 +6,8 @@ Zendesk CLi is a lightweight & highly performant viewer client that shows all ti
 
 # Contents:
 - <a href="#installation">Installation</a>
-- <a href="#execution">Execution
+- <a href="#execution">Execution</a>
+- <a href="#running-spec-tests">Running Spec Tests</a>
 - <a href="#requirement-checklist">Requirement checklist</a>
 - <a href="#choosing-cli">Choosing CLi</a>
 - <a href="#architecture">Architecture</a>
@@ -76,10 +77,10 @@ Violia!
 # Running Spec Tests
 To run spec tests, please follow the steps below:
 
-Step 1. Ensure that you are in the root working directory of the project
-Step 2. Open up controller/application_controller.rb
-Step 3. <b>Remove or comment the last line `ApplicationController.run_main`</b>
-Step 4. In the terminal, run:
+- Step 1. Ensure that you are in the root working directory of the project
+- Step 2. Open up controller/application_controller.rb
+- Step 3. <b>Remove or comment the last line `ApplicationController.run_main`</b>
+- Step 4. In the terminal, run:
 ```
 rspec tests/application_spec.rb
 ```

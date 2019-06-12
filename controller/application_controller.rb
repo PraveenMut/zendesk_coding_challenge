@@ -156,4 +156,4 @@ class ApplicationController
   end
 end
 
-ApplicationController.menu_control
+ApplicationController.run_main

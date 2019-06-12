@@ -79,6 +79,7 @@ class ApplicationView
   def self.show_single_ticket(ticket_data)
     print "\nThank you! Here is the ticket:\n"
     print "\nTicket Subject: #{ticket_data[:subject]}\n"
+    print "\nSubmitted by (ID): #{ticket_data[:submitter_id]}\n"
     print "\nTicket Description:\n"
     print "\n#{ticket_data[:description]}"
     print "\n\nTicket Created: #{ticket_data[:created_at]} "

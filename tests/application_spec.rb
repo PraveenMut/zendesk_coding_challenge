@@ -196,6 +196,17 @@ RSpec.describe ApplicationController do
   end
 end
 
+## Test if the ticket gets displayed properly in the viewer
+RSpec.describe ApplicationView do
+  let(:input_data) { RequestHandler.retrieve_single_ticket(5)[:ticket] }
+    describe '#show_single_ticket' do
+      context 'it successfully shows a ticket' do  
+      specify { expect { ApplicationView.show_single_ticket(input_data) }.to output(/(aliquip)/).to_stdout }
+    end
+  end
+end
+
+
 ## Attempted to mock data and see if the show_single_ticket method 
 ## outputted with a 5.json
 ## Kept getting errors when attempting to use extract_mock_data. Aborted due to 

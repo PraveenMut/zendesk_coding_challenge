@@ -83,7 +83,7 @@ class ApplicationView
     print "\nTicket Description:\n"
     print "\n#{ticket_data[:description]}"
     print "\n\nTicket Created: #{ticket_data[:created_at]} "
-    print "\n\nTicket Created: #{ticket_data[:updated_at]} "
+    print "\n\nTicket Updated: #{ticket_data[:updated_at]} "
     print "\n\nStatus: #{ticket_data[:status]}"
     print "\n------------------------------------"
     print "\n\nWhat would you like to do now?\n"

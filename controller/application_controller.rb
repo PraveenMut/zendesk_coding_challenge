@@ -29,10 +29,10 @@ class ApplicationController
     RequestHandler.set_is_next_page = true
     ApplicationView.welcome_screen
     while true
-      get_input()
+      get_input
       if @@input == "v" || @@input == "V"
         ApplicationView.load_all_tickets
-        res = RequestHandler.retrieve_all_tickets()
+        res = RequestHandler.retrieve_all_tickets
           if res == 401
             ApplicationView.error_handler(@forbidden_response, res)
           elsif res == 404
@@ -134,7 +134,7 @@ class ApplicationController
   # a method to show a single ticket and also drive program flow based on user input for a single ticket
   def self.show_single(in_testing=false)
     @@input = nil
-    ticket_data = ApplicationModel.retrieve_tickets_data
+    ticket_data = ApplicationModel.date_formatter(ApplicationModel.retrieve_tickets_data)
     ApplicationView.show_single_ticket(ticket_data)
     return ticket_data if in_testing == true
 

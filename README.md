@@ -1,3 +1,5 @@
+<img src="./img/zendesk_screenshot.png" width="400" />
+
 # Zendesk CLi Ticket Viewer
 # Introduction
 Zendesk CLi is a lightweight & highly performant viewer client that shows all tickets that an agent has in their account. In addition, it has the ability to show pertinent details of a single ticket. The application interfaces with ZenDesk’s tickets API as the ‘source of truth’ to provide the associated tickets for the viewer to process and show. 
@@ -22,7 +24,7 @@ This application has been tested to run on MacOS X/UNIX based machines. However,
 Due to the nature of dependencies and file systems between operating systems, <b>it is strongly recommended that you run Zendesk CLi on MacOS based systems</b>. 
 
 ## Prerequisites:
- - Ruby 2.5.3 or over
+ - Ruby 2.5.1 or over
 
 To check what version of Ruby you have installed, in the terminal, enter:
 
@@ -47,14 +49,14 @@ This application is designed to run with minimal dependencies for portability. T
 
 The rubygems HTTP & JSON should be preinstalled with most installations of Ruby. To check whether they exist:
 ```
-gem list | grep -E “http|json” 
+gem list | grep -E "http|json"
 ```
 If either only one or none appear, please install these gems:
 ```
-gem install ‘http’
+gem install http
 ```
 ```
-gem install ‘json’
+gem install json
 ```
 Afterwards, install:
 ```
@@ -70,6 +72,18 @@ ruby controller/application_controller.rb
 ```
 
 Violia!
+
+# Running Spec Tests
+To run spec tests, please follow the steps below:
+
+Step 1. Ensure that you are in the root working directory of the project
+Step 2. Open up controller/application_controller.rb
+Step 3. <b>Remove or comment the last line `ApplicationController.run_main`</b>
+Step 4. In the terminal, run:
+```
+rspec tests/application_spec.rb
+```
+The tests should run
 
 # Requirement Checklist
 
@@ -140,11 +154,11 @@ Paginating through the entire ticket list was undoubtly the biggest component of
 
  -  <b>Pure Fat client:</b> The client now handles all of the parsing, processing, storing for <b><em>all</b></em> tickets involved. In essence, the client becomes a mini version of the ZenDesk API. This does not require a connection to the internet when in pagination mode. However, this indeed can lead to processing errors and most importantly, storage. This method will clearly <b>not scale</b>, as it requires the client to download the <em>entire</em> ticket list which could be in the order of 10s of thousands. Initial request is at O(1) time but processing is at O(n) time.
 
-- <b>Progressive client:</b> I chose this method to for my pagination. It combines the best of both worlds, the thick and thin client-server architectures. Instead of requesting the entire dataset which cost both bandwidth and time, only the first small n tickets are downloaded, processed and displayed. Only when the client requests the l = ((n)/page_limit)-1 page, the next set of data is prefetched (preferrably asyncronously in the background) and then displayed when l+2 is requested, then it displayed.
+- <b>Progressive client:</b> I chose this method to for my pagination. It combines the best of both worlds, the thick and thin client-server architectures. Instead of requesting the entire dataset which cost both bandwidth and time, only the first small n tickets are downloaded, processed and displayed. Only when the client requests the ![alt text](./img/fractional.png "L = ndivbypglimitminus1") page, the next set of data is prefetched (preferrably asyncronously in the background) and then displayed when l+2 is requested, then it displayed.
 
 The time complexity of my pagination function is O(n) = T(2n) for processing, unlike pure fat client, the retrieval time should always be constant O(1) as you are only retrieving a constant number of tickets. For small n, this approach provides <b>blazing fast</b> pagination, allows the client to be temporarily disconnected (mobile friendly) and the pagination not to be interrupted.
 
-Thus, for the purposes of this project, I do believe the progressive client is highly scalable due to small file of the JSON involved (always under 1-2MB). However, to conclude, the pure thin client is the most ideal model when the data size (size complexity) becomes large. This is due to the asymptotic time complexity of Omega(n) of my processing in pagination (new pages need to be inserted to the master array). 
+Thus, for the purposes of this project, I do believe the progressive client is highly scalable due to small file of the JSON involved (always under 1-2MB). However, to conclude, the pure thin client is the most ideal model when the data size (size complexity) becomes large. This is due to the asymptotic time complexity of ![alt-text](./img/ohmn.png) of my processing in pagination (new pages need to be inserted to the master array). 
 
 
 ## Testing 
